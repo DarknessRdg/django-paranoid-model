@@ -149,6 +149,9 @@ class Paranoid(models.Model):
         if not hard_delete:
             self.deleted_at = timezone.now()
             self.save()
+
+            for instance in self._related_objects():
+                instance.delete()
         else:
             super(Paranoid, self).delete(using=using, keep_parents=keep_parents)
 
