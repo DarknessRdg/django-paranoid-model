@@ -59,6 +59,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         for key in kwargs.keys():
             if key.startswith('deleted_at'):
                 kwargs.pop(key)
+                break
 
         if not with_deleted:
             kwargs['deleted_at__isnull'] = True
