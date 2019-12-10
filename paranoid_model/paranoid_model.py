@@ -28,7 +28,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         """
         objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
 
-        if objeto.deleted_at is None:
+        if objeto.is_soft_deleted:
             raise SoftDeleted(
                 "%s matching query does not exist." %
                 self.model._meta.object_name)
@@ -114,6 +114,8 @@ class Paranoid(models.Model):
         created_at: DateTimeField
         updated_at: DateTimeField
         deleted_at: DateTimeField
+    Properties:
+        is_soft_deleted: bool
     """
     objects = ParanoidManager()
 
@@ -123,6 +125,15 @@ class Paranoid(models.Model):
 
     class Meta:
         abstract = True
+
+    @property
+    def is_soft_deleted(self):
+        """
+        Property to check is current instance has been soft deleted
+        Returns:
+            bool: if instance has been soft deleted
+        """
+        return self.deleted_at is not None
 
     def delete(self, using=None, keep_parents=False, hard_delete=False):
         """
