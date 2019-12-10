@@ -4,7 +4,7 @@ from django.utils import timezone
 
 
 class SoftDeleted(Exception):
-    """O Objeto foi deletado atrvés de um Soft Delete"""
+    """Object has been soft deleted."""
     pass
 
 
@@ -16,16 +16,15 @@ class ParanoidQuerySet(models.query.QuerySet):
 
     def get(self, *args, **kwargs):
         """
-        Sobrescreve comportamendo padrão do mteodo get
+        Override default behavior of Django's get() to apply a custom validation
         Args:
-             *args
-             **kwargs
+             *args: passed to Django's get
+             **kwargs: passed to Django's get
         Returns:
-            Object, instancia de um objeto com a query passada e que
-            nao foi deletado
+            Object, instance of object not soft deleted or not hard deleted
         Raise:
-            model.DoesNotExist se objeto nao for encontrado
-            paranoid_model.SoftDeleted se objeto tiver sido deletado
+            model.DoesNotExist: object not found on database
+            paranoid_model.SoftDeleted: object has been soft deleted
         """
         objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
 
@@ -38,12 +37,12 @@ class ParanoidQuerySet(models.query.QuerySet):
 
     def all(self, with_deleted=False):
         """"
-        Sobrescreve comportamento padrão do metodo all para selecionar todos as instancias
-        que nao sofreram soft delete ou inclui-las
+        Override default behavior of Django's all() to filter only not soft deleted or
+        include the soft deleted.
         Args:
-            with_deleted: boolean default, verifica se é pra selecionar os deletados também
+            with_deleted: bool to check if filter soft deleted or not. Default {False}
         Returns:
-            ParanoidQuerySet
+            ParanoidQuerySet[]
         """
         return self.filter(with_deleted=with_deleted)
 
@@ -52,9 +51,9 @@ class ParanoidQuerySet(models.query.QuerySet):
         Sobrescreve comportamento padrão do metodo de filter para selecionar somente as intancias
          que nao sofreram soft delete ou inclui-las
         Args:
-            with_deleted: boolean default, verifica se é pra selecionar os deletados também
+            with_deleted: bool to check if filter soft deleted or not. Default {False}
         Returns:
-            ParanoidQuerySet
+            ParanoidQuerySet[]
         """
 
         for key in kwargs.keys():
@@ -67,9 +66,9 @@ class ParanoidQuerySet(models.query.QuerySet):
 
     def delete(self, hard_delete=False):
         """
-        Deleta as instancias da QuerySet atual.
+        Delet instances from current QuerySet
         Args:
-            hard_delete: boolean default False, verifica se deseja deletar para sempre a instancia
+            hard_delete: bool to check if apply soft delete or django's delete
         Returns:
             int(): amount deleted
         """
@@ -87,14 +86,22 @@ class ParanoidQuerySet(models.query.QuerySet):
 
 
 class ParanoidManager(models.Manager):
-    """Manager para model com comportamento Paranoid (que usa um soft delete)"""
+    """Paranoid Manager with a Paranoid behavior"""
 
     _queryset_class = ParanoidQuerySet
 
     def get_queryset(self):
         return self._queryset_class(self.model, using=self._db)
 
-    def all(self, with_deleted=False, **kwargs):
+    def all(self, with_deleted=False):
+        """
+        Intercept Django's query all() and use Paranoid Queryset method all()
+        Args:
+            with_deleted: bool to check if also wants to filter soft deleted instances
+        Returns:
+            ParanoidQuerySet[]
+        """
+
         qs = self.get_queryset()
         return qs.all(with_deleted=with_deleted)
 
@@ -147,18 +154,23 @@ class Paranoid(models.Model):
 
     def _related_objects(self):
         """
-        Metodo para pegar as instancias dos objectos que tem relacao de chave estrangeira com
-        a instancia atual
+        Method to get all objects with foreign key the relation with self instance
         Args:
             self
-
         Returns:
-            List() com todas os objetos relacionados
+            List(): all related objects
         """
         collector = NestedObjects(using=router.db_for_write(self))
         collector.collect([self])
 
         def parse_list(obj):
+            """
+            Parse to nested objects
+            Args:
+                obj: list instance or models object instance
+            Returns:
+                list(): list with objects
+            """
             if isinstance(obj, list):
                 array = []
                 for item in obj:
