@@ -9,7 +9,7 @@ https://raw.githubusercontent.com/Experluan/django-paranoid-model/master/paranoi
 
 File link: https://github.com/Experluan/django-paranoid-model/blob/master/paranoid_model/paranoid_model.py
 
-# Create you Paranoid Model
+# Create your Paranoid Model
 
 On your models.py file import Paranoid class from paranoid_moldel.py, then inheritance Paranoid class on your models
 
