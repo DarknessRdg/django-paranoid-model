@@ -44,6 +44,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         Returns:
             ParanoidQuerySet[]
         """
+        print(super().prefetch_related())
         return self.filter(with_deleted=with_deleted)
 
     def filter(self, with_deleted=False, *args, **kwargs):
@@ -61,6 +62,15 @@ class ParanoidQuerySet(models.query.QuerySet):
                 kwargs.pop(key)
                 break
 
+            # when related names are used django first query if a filter
+            # filtering the objects related and after that django filter
+            # with user's filter.
+            # When Django filter a object soft deleted, with_deledt should
+            # be True.
+            elif isinstance(kwargs[key], models.Model) and not with_deleted:
+                if kwargs[key].is_soft_deleted:
+                    with_deleted = True
+        
         if not with_deleted:
             kwargs['deleted_at__isnull'] = True
         return super(ParanoidQuerySet, self).filter(*args, **kwargs)
@@ -94,7 +104,7 @@ class ParanoidManager(models.Manager):
     def get_queryset(self):
         return self._queryset_class(self.model, using=self._db)
 
-    def all(self, with_deleted=False):
+    def all(self, **kwargs):
         """
         Intercept Django's query all() and use Paranoid Queryset method all()
         Args:
@@ -102,7 +112,20 @@ class ParanoidManager(models.Manager):
         Returns:
             ParanoidQuerySet[]
         """
-
+        try:
+            with_deleted = kwargs['with_deleted']
+        except KeyError:
+            with_deleted = False
+        
+        try:
+            # When Manager has a instace, is need to check if
+            # the isnstance has been soft delete. Because in case
+            # that instace has been soft delete, the query must be 
+            # with deleted and if user has not passad a with_deleted param
+            if self.instance.is_soft_deleted and 'with_deleted' not in kwargs.keys():
+                with_deleted = True
+        except AttributeError:
+            pass
         qs = self.get_queryset()
         return qs.all(with_deleted=with_deleted)
 
