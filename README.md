@@ -1,5 +1,5 @@
 # django-paranoid-model
-Django abstract model with paranoid behavior, therefore when an instance is deleted it is not really deleted from database, it's applied and mask on the filter so when filter, the result are the "undeleted" instances.
+Django abstract model with paranoid behavior, therefore when an instance is deleted it is not really deleted from database, it's applied a mask on the filter so when filter, the result are the "undeleted" instances.
 
 # Get Started
 Raw the file paranoid_model.py from app paranoid_model and paste on your local project. 
