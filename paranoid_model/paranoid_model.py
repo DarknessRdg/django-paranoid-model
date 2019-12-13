@@ -150,8 +150,6 @@ class ParanoidManager(models.Manager):
         return qs.filter(with_deleted=with_deleted, *args, **kwargs)
 
 
-
-
 class Paranoid(models.Model):
     """
     Abstract model with a Paranoid behavior, therefore once deleted
