@@ -1,5 +1,5 @@
 from django.test import TestCase
-from paranoid_model.models import Person
+from paranoid_model.test.models import Person
 from faker import Faker
 from paranoid_model.test.utils import any_list, all_list, get_person_instance, create_list_of_person
 

@@ -1,5 +1,5 @@
 from django.test import TestCase
-from paranoid_model.models import Person, Phone
+from paranoid_model.test.models import Person, Phone
 from faker import Faker
 from paranoid_model.test.utils import (
     any_list, all_list, get_person_instance, create_list_of_person,
@@ -38,6 +38,7 @@ class RelatedModelTest(TestCase):
 
         phone1.delete()
         self.assertEquals(person.phones.all().count(), 1)
+        print('--------------------------------------------------------')
         self.assertEquals(person.phones.all(with_deleted=True).count(), 2)
         
         phone1.restore()

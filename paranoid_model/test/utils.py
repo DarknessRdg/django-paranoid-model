@@ -1,5 +1,6 @@
 from faker import Faker
-from paranoid_model.models import Person, Phone
+from paranoid_model.test.models import Person, Phone
+
 """
 File wiht utils functions
 """
