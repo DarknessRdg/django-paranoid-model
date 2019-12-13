@@ -45,26 +45,22 @@ class ParanoidQuerySet(models.query.QuerySet):
         """
         return self.filter(with_deleted=with_deleted)
 
-    def filter(self, with_deleted=None, *args, **kwargs):
+    def filter(self, with_deleted=True, *args, **kwargs):
         """
         Override default behavior of Django's filter() to filter not sotf deleted or include
         instaces that has been soft_deleted.
-
-        Be careful,
-            Every method that calls this filter() pass this param, otherwise it
-            it will be considered True. That is because default is None, and it is to know when
-            filter is called from related_name query. 
-
-            It assume when with_deleted is None it's is been called from django's core method, and
-            not a parnoid filter, and paranoid filter won't be applied
         
+        with_deleted has a default True because some Django's features call directly
+        this method, like a ManyToMant field with related name, and in that case we want
+        to have the default behavior and not be on Django's way. So we assume that 
+        every paranoid method that calls this filter() will pass a with_deleted and so 
+        work as user expects.
+
         Args:
-            with_deleted: bool to check if filter soft deleted or not. Default {None}.
+            with_deleted: bool to check if filter soft deleted or not. Default {True}.
         Returns:
             ParanoidQuerySet[]
         """
-        if with_deleted is None:
-            return super(ParanoidQuerySet, self).filter(*args, **kwargs)
 
         for key in kwargs.keys():
             if key.startswith('deleted_at'):
