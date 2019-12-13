@@ -61,6 +61,9 @@ class SingleModelTest(TestCase):
 
         filter_without_param = Person.objects.filter(name__icontains='.')
         self.assertTrue(all_list(filter_without_param, lambda x: not x.is_soft_deleted))
+        
+        filter_from_filter = filter_without_param.filter(name__icontains='.')
+        self.assertTrue(all_list(filter_from_filter, lambda x: not x.is_soft_deleted))
 
     def test_filter_with_deleted_param(self):
         """Test query filter(with_deleted)"""

@@ -25,8 +25,8 @@ class RelatedModelTest(TestCase):
         all_phones = person.phones.all()
         self.assertEquals(all_phones.count(), 1)
     
-    def test_related_name_queries(self):
-        """Test related name query"""
+    def test_related_name_queries_all(self):
+        """Test related name query .all()"""
         person = get_person_instance()
         person.save()
         
@@ -46,3 +46,18 @@ class RelatedModelTest(TestCase):
         self.assertEquals(person.phones.all().count(), 2)
         self.assertEquals(person.phones.all(with_deleted=True).count(), 2)
         self.assertEquals(person.phones.all(with_deleted=False).count(), 0)
+    
+    def test_related_name_queries_filter(self):
+        """Test related name query .filter()"""
+        person = get_person_instance()
+        person.save()
+        
+        phone1 = get_phone_instace(person)
+        phone1.save()
+        phone2 = get_phone_instace(person)
+        phone2.save()
+        
+        phone1.delete()
+        self.assertEquals(person.phones.filter(owner=person).count(), 1)
+        self.assertEquals(person.phones.filter(owner=person, with_deleted=True).count(), 2)
+        self.assertEquals(person.phones.filter(owner=person, with_deleted=False).count(), 1)
