@@ -10,8 +10,7 @@ class SoftDeleted(Exception):
 
 class ParanoidQuerySet(models.query.QuerySet):
     """
-    QuerySet de um model que funciona como Paranoid, onde campo deletado
-    tem como nome: ``deleted_at``
+    QuerySet for a Paranoid Model with field ``deleted_at`` as a mask
     """
 
     def get(self, *args, **kwargs):
@@ -46,15 +45,26 @@ class ParanoidQuerySet(models.query.QuerySet):
         """
         return self.filter(with_deleted=with_deleted)
 
-    def filter(self, with_deleted=False, *args, **kwargs):
+    def filter(self, with_deleted=None, *args, **kwargs):
         """
-        Sobrescreve comportamento padrão do metodo de filter para selecionar somente as intancias
-         que nao sofreram soft delete ou inclui-las
+        Override default behavior of Django's filter() to filter not sotf deleted or include
+        instaces that has been soft_deleted.
+
+        Be careful,
+            Every method that calls this filter() pass this param, otherwise it
+            it will be considered True. That is because default is None, and it is to know when
+            filter is called from related_name query. 
+
+            It assume when with_deleted is None it's is been called from django's core method, and
+            not a parnoid filter, and paranoid filter won't be applied
+        
         Args:
-            with_deleted: bool to check if filter soft deleted or not. Default {False}
+            with_deleted: bool to check if filter soft deleted or not. Default {None}.
         Returns:
             ParanoidQuerySet[]
         """
+        if with_deleted is None:
+            return super(ParanoidQuerySet, self).filter(*args, **kwargs)
 
         for key in kwargs.keys():
             if key.startswith('deleted_at'):
@@ -127,6 +137,23 @@ class ParanoidManager(models.Manager):
             pass
         qs = self.get_queryset()
         return qs.all(with_deleted=with_deleted)
+    
+    def filter(self, with_deleted=False, *args, **kwargs):
+        """
+        Intercept firts method ``objects.filter()``.
+        This is because a querry from related_name doesn't call this 
+        method, in that case it can be treated on queryset.filter and know
+        when is a related_name query or an objects query.
+        
+        Args:
+            with_deleted: bool to check if filter soft deleted or not. Default {False}
+        Returns:
+            ParanoidQuerySet[]
+        """
+        qs = self.get_queryset()
+        return qs.filter(with_deleted=with_deleted, *args, **kwargs)
+
+
 
 
 class Paranoid(models.Model):
