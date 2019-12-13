@@ -38,7 +38,6 @@ class RelatedModelTest(TestCase):
 
         phone1.delete()
         self.assertEquals(person.phones.all().count(), 1)
-        print('--------------------------------------------------------')
         self.assertEquals(person.phones.all(with_deleted=True).count(), 2)
         
         phone1.restore()
