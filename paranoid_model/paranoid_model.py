@@ -44,7 +44,6 @@ class ParanoidQuerySet(models.query.QuerySet):
         Returns:
             ParanoidQuerySet[]
         """
-        print(super().prefetch_related())
         return self.filter(with_deleted=with_deleted)
 
     def filter(self, with_deleted=False, *args, **kwargs):
