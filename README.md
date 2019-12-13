@@ -5,9 +5,9 @@ Django abstract model with paranoid behavior, therefore when an instance is dele
 Raw the file paranoid_model.py from app paranoid_model and paste on your local project. 
 
 You can copy from this link:
-https://raw.githubusercontent.com/Experluan/django-paranoid-model/master/paranoid_model/paranoid_model.py
+https://raw.githubusercontent.com/DarknessRdg/django-paranoid-model/master/paranoid_model/paranoid_model.py
 
-File link: https://github.com/Experluan/django-paranoid-model/blob/master/paranoid_model/paranoid_model.py
+File link: https://github.com/DarknessRdg/django-paranoid-model/blob/master/paranoid_model/paranoid_model.py
 
 # Create your Paranoid Model
 
