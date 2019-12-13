@@ -26,6 +26,7 @@ class RelatedModelTest(TestCase):
         self.assertEquals(all_phones.count(), 1)
     
     def test_related_name_queries(self):
+        """Test related name query"""
         person = get_person_instance()
         person.save()
         
