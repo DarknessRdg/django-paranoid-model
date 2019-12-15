@@ -1,0 +1,130 @@
+"""
+File with QuerySet used on Paranoid Model
+"""
+
+
+from django.db import models
+from paranoid_model.exceptions import SoftDeleted, IsNotSoftDeleted
+
+
+class ParanoidQuerySet(models.query.QuerySet):
+    """
+    QuerySet for a Paranoid Model with field ``deleted_at`` as a mask
+    """
+
+    def get(self, *args, **kwargs):
+        """
+        Override default behavior of Django's get() to apply a custom validation
+        Args:
+             *args: passed to Django's get
+             **kwargs: passed to Django's get
+        Returns:
+            Object, instance of object not soft deleted or not hard deleted
+        Raise:
+            model.DoesNotExist: object not found on database
+            paranoid_model.SoftDeleted: object has been soft deleted
+            model.MultipleObjectsReturned: if filtered more than 1 instance
+        """
+        objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
+
+        if objeto.is_soft_deleted:
+            raise SoftDeleted(
+                "Object %s has been soft deleted. Try use get_deleted() or get_or_restore()." %
+                self.model._meta.object_name)
+
+        return objeto
+    
+    def get_deleted(self, *arg, **kwargs):
+        """
+        Method to get a instance that has not been soft deleted yet.
+        Args:
+             *args: passed to Django's get
+             **kwargs: passed to Django's get
+        Returns:
+            Object: instance of object not soft deleted and not hard deleted
+        Raise:
+            model.DoesNotExist: object not found on database
+            paranoid_model.IsNotSoftDeleted: object has not been soft deleted yet
+            model.MultipleObjectsReturned: if filtered more than 1 instance
+        """
+        kwargs['deleted_at__isnull'] = False
+        objeto = super(ParanoidQuerySet, self).get(*arg, **kwargs)
+
+        if not objeto.is_soft_deleted:
+            raise IsNotSoftDeleted(
+                "Object %s has not been soft deleted yet. Try get()" %
+                self.model._meta.object_name)
+        
+        return objeto
+
+    def all(self, with_deleted=False):
+        """"
+        Override default behavior of Django's all() to filter only not soft deleted or
+        include the soft deleted.
+        Args:
+            with_deleted: bool to check if filter soft deleted or not. Default {False}
+        Returns:
+            ParanoidQuerySet[]
+        """
+        return self.filter(with_deleted=with_deleted)
+
+    def filter(self, with_deleted=True, *args, **kwargs):
+        """
+        Override default behavior of Django's filter() to filter not sotf deleted or include
+        instaces that has been soft_deleted.
+        
+        ``with_deleted`` has a default True because some Django's features call directly
+        this method, like a ManyToMant field with related name, and in that case we want
+        to have the default behavior and not be on Django's way. So we assume that 
+        every paranoid method that calls this filter() will pass a with_deleted and so 
+        work as user expects.
+
+        It is also assumed that a ParanoidQueryset[] has already filtered the instances
+        soft deleted according to the param whith_delted and the nested filter() wont need
+        to check again, and filter without deleted, like ``objects.filter().filter().filter()``. 
+        Onlty the firts filter will need to have ``with_deleted`` param, like: 
+        ``objects.filter(with_deleted=False).filter().filter()``
+
+        Args:
+            with_deleted: bool to check if filter soft deleted or not. Default {True}.
+        Returns:
+            ParanoidQuerySet[]
+        """
+
+        for key in kwargs.keys():
+            if key.startswith('deleted_at'):
+                kwargs.pop(key)
+                break
+
+            # when related names are used django first query if a filter
+            # filtering the objects related and after that django filter
+            # with user's filter.
+            # When Django filter a object soft deleted, with_deledt should
+            # be True.
+            elif isinstance(kwargs[key], models.Model) and not with_deleted:
+                if kwargs[key].is_soft_deleted:
+                    with_deleted = True
+        
+        if not with_deleted:
+            kwargs['deleted_at__isnull'] = True
+        return super(ParanoidQuerySet, self).filter(*args, **kwargs)
+
+    def delete(self, hard_delete=False):
+        """
+        Delet instances from current QuerySet
+        Args:
+            hard_delete: bool to check if apply soft delete or django's delete
+        Returns:
+            int(): amount deleted
+        """
+
+        if not hard_delete:
+            cont = 1
+            for instance in self:
+                instance.delete()
+                cont += 1
+            # Clear the result cache, in case this QuerySet gets reused.
+            self._result_cache = None
+            return cont
+        else:
+            return len(super(ParanoidQuerySet, self).delete())
