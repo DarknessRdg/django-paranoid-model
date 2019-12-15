@@ -3,9 +3,8 @@ from paranoid_model.test.models import Person, Phone
 from faker import Faker
 from paranoid_model.test.utils import (
     any_list, all_list, get_person_instance, create_list_of_person,
-    get_phone_instace
+    get_phone_instance
 )
-from paranoid_model.paranoid_model import SoftDeleted
 
 
 fake = Faker('en_US')
@@ -32,7 +31,7 @@ class RelatedModelTest(TestCase):
         """Test creation of a related model"""
         person = get_person_instance()
         person.save()
-        get_phone_instace(person).save()
+        get_phone_instance(person).save()
 
         all_phones = person.phones.all()
         self.assertEquals(all_phones.count(), 1)
@@ -42,9 +41,9 @@ class RelatedModelTest(TestCase):
         person = get_person_instance()
         person.save()
         
-        phone1 = get_phone_instace(person)
+        phone1 = get_phone_instance(person)
         phone1.save()
-        phone2 = get_phone_instace(person)
+        phone2 = get_phone_instance(person)
         phone2.save()
 
         self.assertEquals(person.phones.all().count(), 2)
@@ -64,9 +63,9 @@ class RelatedModelTest(TestCase):
         person = get_person_instance()
         person.save()
         
-        phone1 = get_phone_instace(person)
+        phone1 = get_phone_instance(person)
         phone1.save()
-        phone2 = get_phone_instace(person)
+        phone2 = get_phone_instance(person)
         phone2.save()
         
         phone1.delete()
@@ -80,7 +79,7 @@ class RelatedModelTest(TestCase):
         person = get_person_instance()
         person.save()
 
-        phone1 = get_phone_instace(person)
+        phone1 = get_phone_instance(person)
         phone1.save()
 
         self.assertNotRaises(lambda: person.phones.get(phone=phone1.phone))
@@ -96,9 +95,9 @@ class RelatedModelTest(TestCase):
         person = get_person_instance()
         person.save()
 
-        phone1 = get_phone_instace(person)
+        phone1 = get_phone_instance(person)
         phone1.save()
-        phone2 = get_phone_instace(person)
+        phone2 = get_phone_instance(person)
         phone2.save()
         phone2.delete()
 

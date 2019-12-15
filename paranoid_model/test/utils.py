@@ -71,5 +71,5 @@ def create_list_of_person(quantity_saved, quantity_deleted):
         person.delete()
 
 
-def get_phone_instace(owner):
+def get_phone_instance(owner):
     return Phone(phone=fake.phone_number(), owner=owner)
