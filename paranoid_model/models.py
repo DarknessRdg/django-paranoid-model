@@ -7,6 +7,7 @@ from django.db import models, router
 from django.utils import timezone
 from django.contrib.admin.utils import NestedObjects
 from paranoid_model.exceptions import SoftDeleted, IsNotSoftDeleted
+from paranoid_model.manager import ParanoidManager
 
 
 class Paranoid(models.Model):
