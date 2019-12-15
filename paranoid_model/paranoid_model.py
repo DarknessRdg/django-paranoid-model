@@ -8,6 +8,11 @@ class SoftDeleted(Exception):
     pass
 
 
+class IsNotSoftDeleted(Exception):
+    """Object has not been soft deleted."""
+    pass
+
+
 class ParanoidQuerySet(models.query.QuerySet):
     """
     QuerySet for a Paranoid Model with field ``deleted_at`` as a mask
@@ -32,6 +37,28 @@ class ParanoidQuerySet(models.query.QuerySet):
                 "Object %s has been soft deleted. Try use get_deleted() or get_or_restore()." %
                 self.model._meta.object_name)
 
+        return objeto
+    
+    def get_deleted(self, *arg, **kwargs):
+        """
+        Method to get a instance that has not been soft deleted yet.
+        Args:
+             *args: passed to Django's get
+             **kwargs: passed to Django's get
+        Returns:
+            Object: instance of object not soft deleted and not hard deleted
+        Raise:
+            model.DoesNotExist: object not found on database
+            paranoid_model.IsNotSoftDeleted: object has not been soft deleted yet
+        """
+        kwargs['deleted_at__isnull'] = False
+        objeto = super(ParanoidQuerySet, self).get(*arg, **kwargs)
+
+        if not objeto.is_soft_deleted:
+            raise IsNotSoftDeleted(
+                "Object %s has not been soft deleted yet. Try get()" %
+                self.model._meta.object_name)
+        
         return objeto
 
     def all(self, with_deleted=False):
@@ -154,6 +181,21 @@ class ParanoidManager(models.Manager):
         """
         qs = self.get_queryset()
         return qs.filter(with_deleted=with_deleted, *args, **kwargs)
+    
+    def get_deleted(self, *arg, **kwargs):
+        """
+        Method to get a instance that has not been soft deleted yet.
+        Args:
+             *args: passed to Django's get
+             **kwargs: passed to Django's get
+        Returns:
+            Object: instance of object not soft deleted and not hard deleted
+        Raise:
+            model.DoesNotExist: object not found on database
+            paranoid_model.IsNotSoftDeleted: object has not been soft deleted yet
+        """
+        
+        return self.get_queryset().get_deleted(*arg, **kwargs)
 
 
 class Paranoid(models.Model):
@@ -168,6 +210,7 @@ class Paranoid(models.Model):
         is_soft_deleted: bool
     """
     SoftDeleted = SoftDeleted
+    IsNotSoftDeleted = IsNotSoftDeleted
     objects = ParanoidManager()
 
     created_at = models.DateTimeField(auto_now_add=True)
