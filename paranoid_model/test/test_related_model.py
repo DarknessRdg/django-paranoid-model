@@ -89,3 +89,26 @@ class RelatedModelTest(TestCase):
 
         self.assertRaises(Phone.SoftDeleted, lambda: person.phones.get(phone=phone1.phone))
         self.assertRaises(Phone.DoesNotExist, lambda: person.phones.get(phone=phone1.phone+'0'))
+
+    def test_get_deleted(self):
+        """Test .get_deleted() wiht related_name query"""
+
+        person = get_person_instance()
+        person.save()
+
+        phone1 = get_phone_instace(person)
+        phone1.save()
+        phone2 = get_phone_instace(person)
+        phone2.save()
+        phone2.delete()
+
+        self.assertRaises(
+            Phone.IsNotSoftDeleted,
+            lambda: person.phones.get_deleted(phone=phone1.phone))
+
+        self.assertNotRaises(
+            lambda: person.phones.get_deleted(phone=phone2.phone))
+        
+        self.assertRaises(
+            Phone.MultipleObjectsReturned,
+            lambda: person.phones.get(owner=person))

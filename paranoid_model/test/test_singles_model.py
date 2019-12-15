@@ -99,7 +99,6 @@ class SingleModelTest(TestCase):
 
         person.save()
 
-
         self.assertNotRaises(lambda: get_person_function(name))
 
         self.assertRaises(Person.DoesNotExist, lambda: get_person_function(name+'^'))
@@ -126,3 +125,17 @@ class SingleModelTest(TestCase):
 
         query = Person.objects.filter(name=name, with_deleted=True)
         self.assertRaises(Person.SoftDeleted, lambda: query.get(name=name))
+
+    def test_get_deleted(self):
+        """Test get on deleted item"""
+        
+        person = get_person_instance()
+        person.save()
+        name = person.name 
+        
+        self.assertRaises(
+            Person.IsNotSoftDeleted, 
+            lambda: Person.objects.get_deleted(name=name))
+        
+        person.delete()
+        self.assertNotRaises(lambda: Person.objects.get_deleted(name=name))
