@@ -1,5 +1,5 @@
 from django.db import models
-from paranoid_model import paranoid_model
+from paranoid_model import models as paranoid_model
 
 
 class Person(paranoid_model.Paranoid):
