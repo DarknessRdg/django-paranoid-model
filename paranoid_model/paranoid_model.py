@@ -29,7 +29,7 @@ class ParanoidQuerySet(models.query.QuerySet):
 
         if objeto.is_soft_deleted:
             raise SoftDeleted(
-                "%s matching query does not exist." %
+                "Object %s has been soft deleted. Try use get_deleted() or get_or_restore()." %
                 self.model._meta.object_name)
 
         return objeto
@@ -167,6 +167,7 @@ class Paranoid(models.Model):
     Properties:
         is_soft_deleted: bool
     """
+    SoftDeleted = SoftDeleted
     objects = ParanoidManager()
 
     created_at = models.DateTimeField(auto_now_add=True)
