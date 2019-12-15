@@ -29,6 +29,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         Raise:
             model.DoesNotExist: object not found on database
             paranoid_model.SoftDeleted: object has been soft deleted
+            model.MultipleObjectsReturned: if filtered more than 1 instance
         """
         objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
 
@@ -50,6 +51,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         Raise:
             model.DoesNotExist: object not found on database
             paranoid_model.IsNotSoftDeleted: object has not been soft deleted yet
+            model.MultipleObjectsReturned: if filtered more than 1 instance
         """
         kwargs['deleted_at__isnull'] = False
         objeto = super(ParanoidQuerySet, self).get(*arg, **kwargs)
@@ -193,6 +195,7 @@ class ParanoidManager(models.Manager):
         Raise:
             model.DoesNotExist: object not found on database
             paranoid_model.IsNotSoftDeleted: object has not been soft deleted yet
+            model.MultipleObjectsReturned: if filtered more than 1 instance
         """
         
         return self.get_queryset().get_deleted(*arg, **kwargs)
