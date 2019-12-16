@@ -65,7 +65,7 @@ ParanoidModel.objects.all(with_deleted=False)  # this will exclude the soft dele
 ParanoidModel.objects.all(with_deleted=True)  # will include the soft deleted
 ```
 
-As you can see, ``.all()`` will return the same instances as ``all(with_deleted=False)``
+As you can see, ``.all()`` will return the same instances that ``all(with_deleted=False)``
 
 ### Filter()
 ```py
@@ -74,7 +74,7 @@ ParanoidModel.objects.all(with_deleted=False, **kwargs)  # this will exclude the
 ParanoidModel.objects.all(with_deleted=True, **kwargs)  # will include the soft deleted
 ```
 
-As you can see, ``.filter(**kwargs)`` will return the same instances as ``filter(with_deleted=False, **kwargs)``
+As you can see, ``.filter(**kwargs)`` will return the same instances that ``filter(with_deleted=False, **kwargs)``
 
 
 ### Get()
