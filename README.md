@@ -86,6 +86,11 @@ person.phones.all()  # will return all and include the soft deleted
 person.phones.all(with_deleted=True)  # will return all and include soft deleted
 person.phones.all(with_deleted=False)  # will return all not soft deleted
 ```
+The explanation why Paranoid Query does it, is because imagine we have a *person* and we have *2 phones related to that person*, and that *person has been soft deleted*, and by cascade person's phones also soft deleted.
+
+Now imagine that in the future, that person wants a report of your datas once saved in database, so when we filter his data, we will need, also, his data deleted.
+
+That is why paranoid query will include soft deleted when querring related_name with a soft delete instance.
 
 ### Filter()
 ```py
