@@ -111,3 +111,24 @@ class RelatedModelTest(TestCase):
         self.assertRaises(
             Phone.MultipleObjectsReturned,
             lambda: person.phones.get(owner=person))
+        
+    def test_get_or_restore(self):
+        """Test get_or_restore() related_name query"""
+
+        person = get_person_instance()
+        person.save()
+
+        phone1 = get_phone_instance(person)
+        phone1.save()
+        phone1.delete()
+
+        self.assertFalse(person.phones.get_or_restore(phone=phone1.phone).is_soft_deleted)
+
+        get_phone_instance(person).save()
+        self.assertRaises(
+            Phone.MultipleObjectsReturned,
+            lambda: person.phones.get_or_restore())
+        
+        self.assertRaises(
+            Phone.DoesNotExist,
+            lambda: person.phones.get_or_restore(phone='a'))

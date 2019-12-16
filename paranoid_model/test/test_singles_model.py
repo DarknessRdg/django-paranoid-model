@@ -139,3 +139,22 @@ class SingleModelTest(TestCase):
         
         person.delete()
         self.assertNotRaises(lambda: Person.objects.get_deleted(name=name))
+
+    def test_get_or_restore(self):
+        """Test get_or_restore on an single model"""
+
+        person = get_person_instance()
+        person.save()
+        person.delete()
+
+        self.assertTrue(person.is_soft_deleted)
+        self.assertFalse(Person.objects.get_or_restore(name=person.name).is_soft_deleted)
+        
+        self.assertRaises(
+            Person.DoesNotExist,
+            lambda: Person.objects.get_or_restore(name=person.name+'^'))
+            
+        get_person_instance().save()
+        self.assertRaises(
+            Person.MultipleObjectsReturned,
+            lambda: Person.objects.get())
