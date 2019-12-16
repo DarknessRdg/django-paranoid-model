@@ -57,7 +57,7 @@ class ParanoidManager(models.Manager):
     
     def get_deleted(self, *arg, **kwargs):
         """
-        Method to get a instance that has not been soft deleted yet.
+        Method to get an instance that has not been soft deleted yet.
         Args:
              *args: passed to Django's get
              **kwargs: passed to Django's get
@@ -70,3 +70,18 @@ class ParanoidManager(models.Manager):
         """
         
         return self.get_queryset().get_deleted(*arg, **kwargs)
+    
+    def get_or_restore(self, *args, **kwargs):
+        """
+        Method to get a instance, and if has been soft deleted it will be restored
+        Args:
+             *args: passed to Django's get
+             **kwargs: passed to Django's get
+        Returns:
+            Object: instance of object not soft deleted
+        Raise:
+            model.DoesNotExist: object not found on database
+            model.MultipleObjectsReturned: if filtered more than 1 instance
+        """
+
+        return self.get_queryset().get_or_restore(*args, **kwargs)

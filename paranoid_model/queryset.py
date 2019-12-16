@@ -56,6 +56,25 @@ class ParanoidQuerySet(models.query.QuerySet):
                 self.model._meta.object_name)
         
         return objeto
+    
+    def get_or_restore(self, *args, **kwargs):
+        """
+        Method to get an instance, and if has been soft deleted it will be restored
+        Args:
+             *args: passed to Django's get
+             **kwargs: passed to Django's get
+        Returns:
+            Object: instance of object not soft deleted
+        Raise:
+            model.DoesNotExist: (Django) object not found on database
+            model.MultipleObjectsReturned: (Django) more than 1 instances with matches querry
+        """
+
+        objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
+        if objeto.is_soft_deleted:
+            objeto.restore()
+        
+        return objeto
 
     def all(self, with_deleted=False):
         """"
