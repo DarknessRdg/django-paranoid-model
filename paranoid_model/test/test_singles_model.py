@@ -38,6 +38,23 @@ class SingleModelTest(TestCase):
         person.delete()
 
         self.assertIsNotNone(person.deleted_at)
+    
+    def test_soft_delete_in_a_queryset(self):
+        """Test delete all instances in a querryset"""
+        save, delete = 100, 0
+        create_list_of_person(save, delete)
+
+        self.assertTrue(all_list(
+            Person.objects.all(with_deleted=True),
+            lambda person: not person.is_soft_deleted
+        ))
+
+        Person.objects.all().delete()
+        self.assertEqual(Person.objects.all().count(), 0)
+        self.assertTrue(all_list(
+            Person.objects.all(with_deleted=True),
+            lambda person: person.is_soft_deleted
+        ))
 
     def test_all(self):
         """Test query all()"""

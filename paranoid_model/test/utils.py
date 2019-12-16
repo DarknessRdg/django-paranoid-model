@@ -1,5 +1,5 @@
 from faker import Faker
-from paranoid_model.test.models import Person, Phone
+from paranoid_model.test.models import Person, Phone, Address
 
 """
 File wiht utils functions
@@ -22,7 +22,7 @@ def isdeleted(obj):
 
 def all_list(iterable, key):
     """
-    Method to check if all item in iterable pass the key
+    Function to check if all item in iterable pass the key
     Args:
         iterable: iterable with all objects
         key: function to apply on every object
@@ -34,7 +34,7 @@ def all_list(iterable, key):
 
 def any_list(iterable, key):
     """
-    Method to check if all item in iterable pass the key
+    Function to check if all item in iterable pass the key
     Args:
         iterable: iterable with all objects
         key: function to apply on every object
@@ -46,7 +46,7 @@ def any_list(iterable, key):
 
 def get_person_instance():
     """
-    Method to return an instance of a Person
+    Function to return an instance of a Person
     not saved on database
     Returns:
         Person()
@@ -56,7 +56,7 @@ def get_person_instance():
 
 def create_list_of_person(quantity_saved, quantity_deleted):
     """
-    Method to create a list of person on database
+    Function to create a list of person on database
     Args:
         quantity_saved: int with amount of instances to save
         quantity_deleted: int with amount of instances to save and then delete
@@ -72,4 +72,19 @@ def create_list_of_person(quantity_saved, quantity_deleted):
 
 
 def get_phone_instance(owner):
+    """
+    Function to return an instance of a Phone
+    not saved on database
+    Returns:
+        Phone()
+    """
     return Phone(phone=fake.phone_number(), owner=owner)
+
+def get_address_instance(owner):
+    """
+    Function to return an instance of a Address
+    not saved on database
+    Returns:
+        Address()
+    """
+    return Address(street=fake.address(), owner=owner)

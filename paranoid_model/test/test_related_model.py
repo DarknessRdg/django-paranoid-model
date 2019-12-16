@@ -3,7 +3,7 @@ from paranoid_model.test.models import Person, Phone
 from faker import Faker
 from paranoid_model.test.utils import (
     any_list, all_list, get_person_instance, create_list_of_person,
-    get_phone_instance
+    get_phone_instance, get_address_instance
 )
 
 
@@ -33,6 +33,46 @@ class RelatedModelTest(TestCase):
         all_phones = person.phones.all()
         self.assertEquals(all_phones.count(), 1)
     
+    def test_delete_cascade(self):
+        """Test delete with cascade"""
+        person = get_person_instance()
+        person.save()
+
+        phone1 = get_phone_instance(person)
+        phone1.save()
+        
+        person.delete()
+
+        self.assertNotRaises(lambda: person.phones.get_deleted(owner=person))
+        phone1 = person.phones.get_deleted(owner=person)
+        
+        self.assertTrue(person.is_soft_deleted and phone1.is_soft_deleted)
+    
+    def test_delete_cascade_with_many_objects(self):
+        """Test delete cascade with many objects"""
+        person = get_person_instance()
+        person.save()
+
+        for counter in range(20):
+            get_phone_instance(person).save()
+            get_address_instance(person).save()
+        
+        all_phones = person.phones.all()
+        self.assertEquals(all_phones.count(), 20)
+
+        person.delete()
+        all_phones = person.phones.all(with_deleted=True)
+        all_phones_without_deleted = all_phones.all()
+
+        self.assertEquals(all_phones.count(), 20)
+        self.assertEquals(all_phones_without_deleted.count(), 0)
+
+        all_address = person.addresses.all(with_deleted=True)
+        all_address_without_deleted = all_address.all()
+        self.assertEquals(all_address.count(), 20)
+        self.assertEquals(all_address_without_deleted.count(), 0)
+
+
     def test_related_name_queries_all(self):
         """Test related name query .all()"""
         person = get_person_instance()
