@@ -7,9 +7,6 @@ from paranoid_model.test.utils import (
 )
 
 
-fake = Faker('en_US')
-
-
 class RelatedModelTest(TestCase):
     """Test model with relatioships ManyToMany, ForeignKey, OneToOne"""
     
@@ -83,11 +80,18 @@ class RelatedModelTest(TestCase):
         phone1.save()
 
         self.assertNotRaises(lambda: person.phones.get(phone=phone1.phone))
-        self.assertRaises(Phone.DoesNotExist, lambda: person.phones.get(phone=phone1.phone+'0'))
+        self.assertRaises(
+            Phone.DoesNotExist, 
+            lambda: person.phones.get(phone=phone1.phone+'0'))
+        
         phone1.delete()
-
-        self.assertRaises(Phone.SoftDeleted, lambda: person.phones.get(phone=phone1.phone))
-        self.assertRaises(Phone.DoesNotExist, lambda: person.phones.get(phone=phone1.phone+'0'))
+        self.assertRaises(
+            Phone.SoftDeleted, 
+            lambda: person.phones.get(phone=phone1.phone))
+        
+        self.assertRaises(
+            Phone.DoesNotExist, 
+            lambda: person.phones.get(phone=phone1.phone+'0'))
 
     def test_get_deleted(self):
         """Test .get_deleted() wiht related_name query"""
