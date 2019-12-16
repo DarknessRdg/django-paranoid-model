@@ -86,10 +86,11 @@ try:
     ParanoidModel.objects.get(pk=10)
 except ParanoidModel.SoftDeleted:
     # The querry found an instance, but it has been soft deleted
+    # it means you need to querry with method get_deleted() or get_or_restore()
     pass
 ```
 
-But, if you pay attention it doesn't allow you to get an instance thas has been soft deleted. Don't worry, no need to cry! :sob: ``get_deleted`` and ``get_or_restore`` will save you!
+But, if you pay attention it doesn't allow you to get an instance that has been soft deleted. Don't worry, no need to cry! :sob: ``get_deleted`` and ``get_or_restore`` will save you!
 
 ### Get_deleted()
 ```py
@@ -105,7 +106,7 @@ The possible raises are:
 You can do the following:
 ```py
 try:
-    ParanoidModel.objects.get(pk=10)
+    ParanoidModel.objects.get_deleted(pk=10)
 except ParanoidModel.DoesNotExist:
     # The querry didn't find any instance with pk = 10
     pass
@@ -113,7 +114,7 @@ except ParanoidModel.DoesNotExist:
 or
 ```py
 try:
-    ParanoidModel.objects.get(pk=10)
+    ParanoidModel.objects.get_deleted(pk=10)
 except ParanoidModel.IsNotSoftDeleted:
     # The querry found an instance, but it has not been soft deleted yet
     # it means you need to querry with method get()
