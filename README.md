@@ -85,7 +85,8 @@ ParanoidModel.objects.get(**kwargs)
 
 Careful with get() method, because it can raise some errors.
 The possible raises are: 
-* **model.DoesNotExist**: will be raised if the querry doesn't match to any instance
+* **model.DoesNotExist**: (Django) will be raised if the querry doesn't match to any instance
+* **model.MultipleObjectsReturned**: (Django) will be raised if more than 1 instances matches with the querry
 * **model.SoftDeleted**: will be raised if the instance has been soft deleted.
 
 You can do the following:
@@ -116,7 +117,8 @@ ParanoidModel.objects.get_deleted(**kwargs)
 
 Careful with get_deleted() method, because it can raise some errors.
 The possible raises are: 
-* **model.DoesNotExist**: will be raised if the querry doesn't match to any instance
+* **model.DoesNotExist**: (Django) will be raised if the querry doesn't match to any instance
+* **model.MultipleObjectsReturned**: (Django) will be raised if more than 1 instances matches with the querry
 * **model.IsNotSoftDeleted**: will be raised if the instance has not been soft deleted yet.
 
 You can do the following:
