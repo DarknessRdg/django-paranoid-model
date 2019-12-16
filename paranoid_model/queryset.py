@@ -147,3 +147,19 @@ class ParanoidQuerySet(models.query.QuerySet):
             return cont
         else:
             return len(super(ParanoidQuerySet, self).delete())
+    
+    def restore(self):
+        """
+        Restore instances from current QuerySet
+        
+        Returns:
+            int(): amount restored
+        """
+
+        cont = 1
+        for instance in self:
+            instance.restore()
+            cont += 1
+        # Clear the result cache, in case this QuerySet gets reused.
+        self._result_cache = None
+        return cont
