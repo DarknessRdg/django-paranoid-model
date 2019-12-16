@@ -2,12 +2,28 @@
 Django abstract model with paranoid behavior, therefore when an instance is deleted it is not really deleted from database, it's applied a mask on the filter so when filter, the result are the "undeleted" instances.
 
 # Get Started
-Raw the file paranoid_model.py from app paranoid_model and paste on your local project. 
+Right now, there are two ways you can get paranoid model: 
+1) clone this repository
+2) Copy the files that allow paranoid behavior works
+
+**1) Clone this repository**
+
+To get the base class of a ``Paranoid``  model, import from Paranoid class from
+```py
+from [path to this repo].paranoid_model.models import Paranoid
+```
+Than you can make the inheritance like the example **Create you Paranoid Model**.
+
+**2) Copy the files that allow paranoid behavior works**
+
+Raw the files queryset.py, manager.py and models.py from app paranoid_model and paste on your local project. 
 
 You can copy from this link:
-https://raw.githubusercontent.com/DarknessRdg/django-paranoid-model/master/paranoid_model/paranoid_model.py
+* [queryset.py](https://github.com/DarknessRdg/django-paranoid-model/blob/master/paranoid_model/queryset.py)
+* [manager.py](https://github.com/DarknessRdg/django-paranoid-model/blob/master/paranoid_model/manager.py)
+* [models.py](https://github.com/DarknessRdg/django-paranoid-model/blob/master/paranoid_model/models.py)
 
-File link: https://github.com/DarknessRdg/django-paranoid-model/blob/master/paranoid_model/paranoid_model.py
+Folder lin link: https://github.com/DarknessRdg/django-paranoid-model/tree/master/paranoid_model
 
 # Create your Paranoid Model
 
