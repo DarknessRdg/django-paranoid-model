@@ -39,6 +39,31 @@ class SingleModelTest(TestCase):
 
         self.assertIsNotNone(person.deleted_at)
     
+    def test_restore(self):
+        """Test restore in a single object"""
+        person = get_person_instance()
+        person.save()
+        
+        self.assertFalse(person.is_soft_deleted)
+
+        person.delete()
+        self.assertTrue(person.is_soft_deleted)
+
+        person.restore()
+        self.assertFalse(person.is_soft_deleted)
+
+    def test_restore_in_a_queryset(self):
+        """Test restore in a queryset"""
+        save, delete = 100, 0
+        create_list_of_person(save, delete)
+
+        Person.objects.all().delete()
+        self.assertEquals(Person.objects.all().count(), 0)
+
+        Person.objects.all(with_deleted=True).restore()
+        self.assertEquals(Person.objects.all().count(), save)
+
+
     def test_soft_delete_in_a_queryset(self):
         """Test delete all instances in a querryset"""
         save, delete = 100, 0

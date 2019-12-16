@@ -72,6 +72,41 @@ class RelatedModelTest(TestCase):
         self.assertEquals(all_address.count(), 20)
         self.assertEquals(all_address_without_deleted.count(), 0)
 
+    def test_restore_cascade(self):
+        """Test restore cascade"""
+        person = get_person_instance()
+        person.save()
+
+        for counter in range(20):
+            get_phone_instance(person).save()
+            get_address_instance(person).save()
+        
+        person.delete()
+        self.assertEquals(person.phones.all(with_deleted=False).count(), 0)
+        self.assertEquals(person.addresses.all(with_deleted=False).count(), 0)
+
+        person.restore()
+        self.assertEquals(person.phones.all(with_deleted=False).count(), 20)
+        self.assertEquals(person.addresses.all(with_deleted=False).count(), 20)
+
+    def test_restore_cascade_in_queryset(self):
+        """Test restore on cascade in a queryset.restore()"""
+        amount, amount_phones = 20, 3
+        person_list = [get_person_instance() for counter in range(amount)]
+        for person in person_list:
+            person.save()
+            for counter in range(amount_phones):
+                get_phone_instance(person).save()
+            person.delete()
+
+        Person.objects.all(with_deleted=True).restore()
+
+        person_all = Person.objects.all()
+        self.assertEquals(person_all.count(), amount)
+        
+        for person in person_all:
+            self.assertFalse(person.is_soft_deleted)
+            self.assertEquals(person.phones.all().count(), amount_phones)
 
     def test_related_name_queries_all(self):
         """Test related name query .all()"""
