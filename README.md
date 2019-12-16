@@ -67,11 +67,36 @@ ParanoidModel.objects.all(with_deleted=True)  # will include the soft deleted
 
 As you can see, ``.all()`` will return the same instances that ``all(with_deleted=False)``
 
+**Obs on related_name queries:** when an instance has been soft deleted, the related_querry ``all()`` will return ``with_deleted=True`` by default, because if the instance has been soft deleted, I guess, it want's to be querried the deleted objects, BUT you can alway pass the parameter ``with_deleted`` and it will work as you wish.
+
+It's something like this:
+```py
+person = Person.objects.create(name='person')
+for i in range(20):
+    phone = Phone.objects.create(phone='123', owner=person)
+    if i % 2 == 0:
+        phone.delete()
+
+person.phones.all()  # will return all not soft deleted
+
+person.delete()  # will delete all the phones that belongs to person
+
+# since person has been deleted, a related_name querry will work a little different
+person.phones.all()  # will return all and include the soft deleted
+person.phones.all(with_deleted=True)  # will return all and include soft deleted
+person.phones.all(with_deleted=False)  # will return all not soft deleted
+```
+The explanation why Paranoid Query does it, is because imagine we have a *person* and we have *2 phones related to that person*, and that *person has been soft deleted*, and by cascade person's phones also soft deleted.
+
+Now imagine that in the future, that person wants a report of your datas once saved in database, so when we filter his data, we will need, also, his data deleted.
+
+That is why paranoid query will include soft deleted when querring related_name with a soft delete instance.
+
 ### Filter()
 ```py
 ParanoidModel.objects.filter(**kwargs)  # will return the filtered instancnes that hasn't been soft deleted
-ParanoidModel.objects.all(with_deleted=False, **kwargs)  # this will exclude the soft deleted
-ParanoidModel.objects.all(with_deleted=True, **kwargs)  # will include the soft deleted
+ParanoidModel.objects.filter(with_deleted=False, **kwargs)  # this will exclude the soft deleted
+ParanoidModel.objects.filter(with_deleted=True, **kwargs)  # will include the soft deleted
 ```
 
 As you can see, ``.filter(**kwargs)`` will return the same instances that ``filter(with_deleted=False, **kwargs)``
