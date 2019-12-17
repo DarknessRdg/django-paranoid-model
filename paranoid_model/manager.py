@@ -55,6 +55,16 @@ class ParanoidManager(models.Manager):
         qs = self.get_queryset()
         return qs.filter(with_deleted=with_deleted, *args, **kwargs)
     
+    def deleted_only(self):
+        """
+        Method to filter only deleted instances
+        Return:
+            ParanoidQuerySet[]
+        """
+
+        qs = self.get_queryset()
+        return qs.deleted_only()
+
     def get_deleted(self, *arg, **kwargs):
         """
         Method to get an instance that has not been soft deleted yet.

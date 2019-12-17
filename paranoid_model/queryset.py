@@ -164,3 +164,11 @@ class ParanoidQuerySet(models.query.QuerySet):
         # Clear the result cache, in case this QuerySet gets reused.
         self._result_cache = None
         return cont
+
+    def deleted_only(self):
+        """
+        Filter only deleted instances
+        Returns:
+            ParanoidQuerySet[]
+        """
+        return self.exclude(deleted_at__isnull=True)
