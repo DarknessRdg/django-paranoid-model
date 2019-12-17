@@ -211,3 +211,20 @@ class RelatedModelTest(TestCase):
         self.assertRaises(
             Phone.DoesNotExist,
             lambda: person.phones.get_or_restore(phone='a'))
+
+    def test_filter_deleted_only(self):
+        """Test .deleted_only() with related name queries"""
+        
+        person = get_person_instance()
+        person.save()
+
+        for counter in range(100):
+            phone = get_phone_instance(person)
+            phone.save()
+
+            if counter % 2 == 0:
+                phone.delete()
+        
+        deleted = person.phones.deleted_only()
+
+        self.assertEquals(deleted.count(), 50)
