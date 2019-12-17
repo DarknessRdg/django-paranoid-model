@@ -158,8 +158,9 @@ class ParanoidQuerySet(models.query.QuerySet):
 
         cont = 1
         for instance in self:
-            instance.restore()
-            cont += 1
+            if instance.is_soft_deleted:
+                instance.restore()
+                cont += 1
         # Clear the result cache, in case this QuerySet gets reused.
         self._result_cache = None
         return cont
