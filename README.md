@@ -1,6 +1,14 @@
 # django-paranoid-model
 Django abstract model with paranoid behavior, therefore when an instance is deleted it is not really deleted from database, it's applied a mask on the filter so when filter, the result are the "undeleted" instances.
 
+## Summary
+
+1) **Get Started**
+2) **Create you paranoid model**
+3) **Instance Manipulate**
+4) **Making queries**
+
+
 # Get Started
 Right now, there are two ways you can get paranoid model: 
 1) clone this repository
@@ -47,6 +55,81 @@ class Person(paranoid_model.models.Paranoid):  # make an inheritance
 * created_at is the field with creation date
 * updated_at is the field with latest update date
 * deleted_at is the field with deletion date, so when it is None it means it hasn't been deleted
+
+
+# Instance Manipulate
+
+ParanoidModel has some some differences on default Django methods.
+
+### save()
+
+This method has no difference, it work just like Django's
+
+```py
+my_paranoid_instance = Paranoid()
+my_paranoid_instance.save()
+```
+
+### delete()
+
+The **most important** method. This is why pararanoid model exists. When ``delete()`` an instance it should not be really deleted from database, but hide from user. 
+
+The magic is in the attribute ``deleted_at``. When there is no date (deleted_at is None) it means it has not been deleted, but if has a date it means it has been deleted. So when we call delete(), it will set up the current date to delete_at field and save the instance, instead of deleted.  
+
+**The delete works on *CASCADE*. So all the related objects will be soft deleted**
+
+```py
+instance = ParanoidModel.objects.create()
+instance.delete()  # instance has the current date on the field deleted_at but it still saved on database 
+instance.deleted_at is None
+>> False
+
+# but remember that this delete will do the same to every related instances like:
+person = Person.objects.create(name='My Name')
+for i in range(5):
+    Phone.objects.create(phone='123456789', owner=person)
+
+person.delete()  # this will soft delete person
+# but will also delete all the 5 phones related to this person
+```
+
+### delete(hard_delete=True)
+
+If you really wants to delete the instance from databse you can use parameter ``hard_delete``. It calls Django's default method
+
+```py
+instance = ParanoidModel.objects.create()
+intance.delete()  # will soft delete
+instance.delete(hard_delete=True)  # will call django delete, so will delete from database
+```
+
+Be careful using ``hard_delete``
+
+### is_soft_deletd
+
+This is a @property that returns a boolean if current instance has been soft deleted or not. Otherwise, it returns if attribute deleted_at is None. It is just a more easy way to check if deleted_at is None instead of use this whole sentence to check.
+
+So you can just do the following:
+
+```py
+instance = ParanoidModel.objects.create()
+
+instance.is_soft_deleted
+>> False
+
+instance.delete()
+instance.is_soft_deleted
+>> True
+
+# real example
+person = Person.objects.create(name='My name')
+person.delete()
+
+if person.is_soft_deleted:
+    person.restore()
+```
+
+
 
 # Making queries
 
@@ -161,5 +244,31 @@ try:
 except ParanoidModel.IsNotSoftDeleted:
     # The querry found an instance, but it has not been soft deleted yet
     # it means you need to querry with method get()
+    pass
+```
+### Get_or_restore()
+This method will work just like Django's wiht a thiny difference, it will restore the instance if it has been soft deleted
+
+```py
+ParanoidModel.objects.get_or_restore(pk=10)
+```
+
+Like all get method, it can raises some exceptions:
+* **model.DoesNotExist**: (Django) will be raised if the querry doesn't match to any instance
+* **model.MultipleObjectsReturned**: (Django) will be raised if more than 1 instances matches with the querry
+
+```py
+try:
+    ParanoidModel.objects.get_deleted(pk=10)
+except ParanoidModel.DoesNotExist:
+    # The querry didn't find any instance with pk = 10
+    pass
+```
+or
+```py
+try:
+    ParanoidModel.objects.get_deleted(name__icontains='a')
+except ParanoidModel.MultipleObjectsReturned:
+    # The querry found more than 1 instance
     pass
 ```
