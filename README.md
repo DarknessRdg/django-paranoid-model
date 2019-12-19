@@ -8,6 +8,7 @@ Django abstract model with paranoid behavior, therefore when an instance is dele
 3) **Instance Manipulate**
 4) **Making queries**
 
+--- 
 
 # Get Started
 Right now, there are two ways you can get paranoid model: 
@@ -33,6 +34,8 @@ You can copy from this link:
 
 Folder lin link: https://github.com/DarknessRdg/django-paranoid-model/tree/master/paranoid_model
 
+---
+
 # Create your Paranoid Model
 
 On your models.py file import Paranoid class from paranoid_models.models file, then inheritance Paranoid class on your models
@@ -56,6 +59,7 @@ class Person(paranoid_model.models.Paranoid):  # make an inheritance
 * updated_at is the field with latest update date
 * deleted_at is the field with deletion date, so when it is None it means it hasn't been deleted
 
+---
 
 # Instance Manipulate
 
@@ -129,7 +133,7 @@ if person.is_soft_deleted:
     person.restore()
 ```
 
-
+---
 
 # Making queries
 
