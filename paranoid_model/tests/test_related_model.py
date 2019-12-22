@@ -226,5 +226,7 @@ class RelatedModelTest(TestCase):
                 phone.delete()
         
         deleted = person.phones.deleted_only()
-
         self.assertEquals(deleted.count(), 50)
+
+        deleted_zero = person.phones.all().deleted_only()
+        self.assertEquals(deleted_zero.count(), 0)

@@ -234,5 +234,10 @@ class SingleModelTest(TestCase):
         create_list_of_person(save, delete)
 
         deleted = Person.objects.deleted_only()
-        
         self.assertEquals(deleted.count(), delete)
+        
+        deleted = Person.objects.all(with_deleted=True).deleted_only()
+        self.assertEquals(deleted.count(), delete)
+
+        deleted_zero = Person.objects.all().deleted_only()
+        self.assertEquals(deleted_zero.count(), 0)
