@@ -276,3 +276,21 @@ except ParanoidModel.MultipleObjectsReturned:
     # The querry found more than 1 instance
     pass
 ```
+
+### Restore()
+This method restore all the instances soft deleted int the current querry set. Look at the example bellow
+
+```py
+for i in range(20):
+    ParanoidModel.objects.create()
+
+ParanoidModel.objects.all().count() == 0
+>> True
+
+ParanoidModel.objects.all(with_deleted=True).restore()
+
+ParanoidModel.objects.all().count() == 0:
+>> False
+ParanoidModel.objects.all().count() == 20:
+>> True
+```
