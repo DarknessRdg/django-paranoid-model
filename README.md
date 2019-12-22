@@ -204,6 +204,25 @@ ParanoidModel.objects.filter(with_deleted=True, **kwargs)  # will include the so
 
 As you can see, ``.filter(**kwargs)`` will return the same instances that ``filter(with_deleted=False, **kwargs)``
 
+### Deleted_only()
+
+To filter only deleted you must use ``deleted_only`` filter. Thats because ``filter`` override querry parameter ``deleted_at`` and change it.
+
+```py
+for i in range(20):
+    instance = ParanoidModel.objects.create()
+    
+    if i % 2 == 0:
+        instance.delete()
+
+ParanoidModel.objects.deleted_only()  # only soft deleted_instance
+
+# DON'T DO THAT
+# 
+# ParanoidModel.objects.filter(deleted_at__isnull=True)
+# this param 'deleted_at__isnull' is overwritten by querry filter
+# that's because every param wich starts with 'deleted_at' are removed
+```
 
 ### Get()
 ```py
