@@ -65,7 +65,7 @@ class Person(paranoid_model.models.Paranoid):  # make an inheritance
 
 ParanoidModel has some some differences on default Django methods.
 
-### save()
+### Save()
 
 This method has no difference, it work just like Django's
 
@@ -74,7 +74,7 @@ my_paranoid_instance = Paranoid()
 my_paranoid_instance.save()
 ```
 
-### delete()
+### Delete()
 
 The **most important** method. This is why pararanoid model exists. When ``delete()`` an instance it should not be really deleted from database, but hide from user. 
 
@@ -97,7 +97,7 @@ person.delete()  # this will soft delete person
 # but will also delete all the 5 phones related to this person
 ```
 
-### delete(hard_delete=True)
+### Delete(hard_delete=True)
 
 If you really wants to delete the instance from databse you can use parameter ``hard_delete``. It calls Django's default method
 
@@ -131,6 +131,22 @@ person.delete()
 
 if person.is_soft_deleted:
     person.restore()
+```
+
+### Restore()
+
+Once an instance has been soft deleted, it can be easily undeleted with method restore()
+
+```py
+instance = ParanoidModel.objects.create()
+
+instance.delete()
+instance.is_soft_deleted
+>> True
+
+instance.restore()
+instance.is_soft_deleted
+>> False
 ```
 
 ---
