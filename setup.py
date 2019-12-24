@@ -19,7 +19,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     
     classifiers=[
-        'Development Status :: 4 - Beta Test',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',
