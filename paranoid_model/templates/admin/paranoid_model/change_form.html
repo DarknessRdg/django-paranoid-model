@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+
+    <div class="submit-row">
+        <input style="float: left; background: rgb(164, 21, 21); color: white;" type="submit" value="{% trans 'Delete permanently' %}" name="_hard-delete" />
+        <input style="background: rgb(112, 191, 43); color: white;" type="submit" value="{% trans 'Restore' %}" name="_restore" />
+    </div>
+
+
+{% endblock %}
