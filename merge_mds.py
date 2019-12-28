@@ -14,11 +14,11 @@ from os.path import isfile, join
 
 target_file = open(OUTPUT, 'w')
 for file_name in sorted(listdir(MD_FOLDER+'/')):
-    file = open(MD_FOLDER+'/'+file_name, 'r')
+    if file_name.endswith('.md'):
+        file = open(MD_FOLDER+'/'+file_name, 'r')
 
-    
-    target_file.write(file.read())
-    target_file.write('\n\n---\n\n')
+        target_file.write(file.read())
+        target_file.write('\n\n---\n\n')
 
-    file.close()
+        file.close()
 target_file.close()
