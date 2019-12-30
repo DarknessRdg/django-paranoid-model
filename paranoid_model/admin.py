@@ -46,9 +46,9 @@ class ParanoidAdmin(admin.ModelAdmin):
 
     change_form_template = 'admin/paranoid_model/change_form.html'
 
-    list_display= ('pk', 'created_at', 'updated_at', 'is_not_deleted')
+    list_display = ('pk', 'created_at', 'updated_at', 'is_not_deleted')
     list_filter = (ParanoidAdminFilter,)
-    actions = ['restore_selected', 'delete_permanently']
+    actions = ['restore_selected', 'permanently_delete']
     
     def is_not_deleted(self, obj):
         """
@@ -65,29 +65,17 @@ class ParanoidAdmin(admin.ModelAdmin):
             request
             obj: instance
         """
-        redirect_url = '.'
-        level, message, log_message = messages.INFO, '', ''
-
-        if '_hard-delete' in request.POST:
-            obj.delete(hard_delete=True)            
-            level, message = messages.SUCCESS, f'{obj.__str__()} hard deleted.'
-            log_message = 'Deleted permanently.'
-
-            path = request.path.split('/')
-            redirect_url = '/'.join(path[:len(path) - 3])
         
-        elif '_restore' in request.POST:
+        if '_restore' in request.POST:
             obj.restore()
 
             level, message = messages.SUCCESS, f'{obj.__str__()} restored.'
             log_message = 'Restored'
-        
+            messages.add_message(request, level, message)
         else:
             return super().response_change(request, obj)
-    
-        messages.add_message(request, level, message)
+        
         super().log_addition(request, obj, log_message)
-
         return HttpResponseRedirect(redirect_url)
     
     def delete_view(self, request, object_id, extra_context=None):
@@ -95,13 +83,19 @@ class ParanoidAdmin(admin.ModelAdmin):
         Override default delete_view method to add 'Soft deleted'
         to log history
         """
-        _return = super().delete_view(request, object_id, extra_context=None)
         
-        try:
-            obj = self.model.objects.get(pk=object_id)
-        except SoftDeleted:  
-            obj = self.model.objects.get_deleted(pk=object_id)
-        super().log_addition(request, obj, 'Soft deleted.')
+        _return = super().delete_view(request, object_id, extra_context=None)
+        if request.POST:
+            try:
+                obj = self.model.objects.get(pk=object_id)
+            except SoftDeleted:
+                obj = self.model.objects.get_deleted(pk=object_id)
+            
+            hard_delete = 'hard_delete' in request.GET.keys()
+            obj.delete(hard_delete=hard_delete)
+
+            super().log_addition(request, obj, 'Soft deleted.')
+        
         return _return
     
     def restore_selected(self, request, queryset):
@@ -111,12 +105,12 @@ class ParanoidAdmin(admin.ModelAdmin):
         count = queryset.restore()
         messages.add_message(request, messages.INFO, f'{count} restored.')
     
-    def delete_permanently(self, request, queryset):
+    def permanently_delete(self, request, queryset):
         """
         Action method to hard delete every instance selected
         """
         count = queryset.delete(hard_delete=True)
-        messages.add_message(request, messages.INFO, f'{count} soft deleted.')
+        messages.add_message(request, messages.INFO, f'{count} permanently deleted.')
 
     def get_object(self, request, object_id, from_field=None):
         """
@@ -134,3 +128,4 @@ class ParanoidAdmin(admin.ModelAdmin):
             return None
         except SoftDeleted:
             return queryset.get_deleted(**{field.name: object_id})
+
