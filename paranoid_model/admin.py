@@ -120,8 +120,8 @@ class ParanoidAdmin(admin.ModelAdmin):
         self.hard_delete = False
     hard_delete = False  # boolean for 'permanently delete' action
     # use django delete confirmation is not very easy, so it's easier to
-    # have a boolean variable to check if delete if permanently or not.
-    # Django's 'delete_selected' user delete_queryset() to delete.
+    # have a boolean variable to check if permanently or not.
+    # Django's 'delete_selected' uses delete_queryset() to delete.
 
     def get_object(self, request, object_id, from_field=None):
         """
