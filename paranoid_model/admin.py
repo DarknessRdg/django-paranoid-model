@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from paranoid_model.exceptions import SoftDeleted
 from django.core.exceptions import ValidationError
 from django.contrib import messages
+from django.contrib.admin.actions import delete_selected
 
 
 class ParanoidAdminFilter(admin.SimpleListFilter):
@@ -49,7 +50,7 @@ class ParanoidAdmin(admin.ModelAdmin):
     list_display = ('pk', 'created_at', 'updated_at', 'is_not_deleted')
     list_filter = (ParanoidAdminFilter,)
     actions = ['restore_selected', 'permanently_delete']
-    
+
     def is_not_deleted(self, obj):
         """
         is not deleted table column on admin list view
@@ -65,7 +66,7 @@ class ParanoidAdmin(admin.ModelAdmin):
             request
             obj: instance
         """
-        
+
         if '_restore' in request.POST:
             obj.restore()
 
@@ -76,7 +77,7 @@ class ParanoidAdmin(admin.ModelAdmin):
             return super().response_change(request, obj)
         
         super().log_addition(request, obj, log_message)
-        return HttpResponseRedirect(redirect_url)
+        return HttpResponseRedirect('.')
     
     def delete_view(self, request, object_id, extra_context=None):
         """
@@ -94,7 +95,9 @@ class ParanoidAdmin(admin.ModelAdmin):
             hard_delete = 'hard_delete' in request.GET.keys()
             obj.delete(hard_delete=hard_delete)
 
-            super().log_addition(request, obj, 'Soft deleted.')
+            report = 'Permanently deleted.' if hard_delete else 'Soft deleted.'
+
+            super().log_addition(request, obj, report)
         
         return _return
     
@@ -104,13 +107,21 @@ class ParanoidAdmin(admin.ModelAdmin):
         """
         count = queryset.restore()
         messages.add_message(request, messages.INFO, f'{count} restored.')
-    
+
     def permanently_delete(self, request, queryset):
         """
         Action method to hard delete every instance selected
         """
-        count = queryset.delete(hard_delete=True)
-        messages.add_message(request, messages.INFO, f'{count} permanently deleted.')
+        self.hard_delete = True
+        return delete_selected(self, request, queryset)
+
+    def delete_queryset(self, request, queryset):
+        queryset.delete(hard_delete=self.hard_delete)
+        self.hard_delete = False
+    hard_delete = False  # boolean for 'permanently delete' action
+    # use django delete confirmation is not very easy, so it's easier to
+    # have a boolean variable to check if delete if permanently or not.
+    # Django's 'delete_selected' user delete_queryset() to delete.
 
     def get_object(self, request, object_id, from_field=None):
         """
