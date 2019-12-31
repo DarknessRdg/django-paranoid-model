@@ -4,8 +4,8 @@ with open('README.md', 'r') as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='django-paranoid-model', # Replace with your own username
-    version='0.0.1',
+    name='django-paranoid-model',
+    version='0.0.3',
     url='https://github.com/DarknessRdg/django-paranoid-model',
     keywords='django paranoid safedelete softdelete',
 
