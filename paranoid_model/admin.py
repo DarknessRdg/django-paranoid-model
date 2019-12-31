@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponseRedirect
 from paranoid_model.exceptions import SoftDeleted
 from django.core.exceptions import ValidationError
@@ -8,7 +9,7 @@ from django.contrib.admin.actions import delete_selected
 
 class ParanoidAdminFilter(admin.SimpleListFilter):
     """Class to handle filter on site"""
-    title = ('soft deleted')
+    title = _('soft deleted')
     parameter_name = 'deleted_at'
     
     def lookups(self, request, mode_admin):
@@ -18,8 +19,8 @@ class ParanoidAdminFilter(admin.SimpleListFilter):
         """
 
         return (
-            ('not soft', ('Not soft deleted')),
-            ('soft', ('Soft deleted')),
+            ('not soft', _('Not soft deleted')),
+            ('soft', _('Soft deleted')),
         )
 
     def queryset(self, request, queryset):
@@ -47,8 +48,11 @@ class ParanoidAdmin(admin.ModelAdmin):
 
     change_form_template = 'admin/paranoid_model/change_form.html'
 
-    list_display = ('pk', 'created_at', 'updated_at', 'is_not_deleted')
+    readonly_fields = ('deleted_at',)
+    list_display = ('pk', '__str__', 'created_at', 'updated_at', 'is_not_deleted')
+    list_display_links = ('pk', '__str__',)
     list_filter = (ParanoidAdminFilter,)
+    
     actions = ['restore_selected', 'permanently_delete']
 
     def is_not_deleted(self, obj):
@@ -116,11 +120,14 @@ class ParanoidAdmin(admin.ModelAdmin):
         return delete_selected(self, request, queryset)
 
     def delete_queryset(self, request, queryset):
+        """
+        Delete a queryset
+        """
         queryset.delete(hard_delete=self.hard_delete)
         self.hard_delete = False
     hard_delete = False  # boolean for 'permanently delete' action
-    # use django delete confirmation is not very easy, so it's easier to
-    # have a boolean variable to check if permanently or not.
+    # use django delete confirmation is pretty hard, so instaead of create 
+    # our own, it is easier to have a boolean variable to check if permanently or not.
     # Django's 'delete_selected' uses delete_queryset() to delete.
 
     def get_object(self, request, object_id, from_field=None):
