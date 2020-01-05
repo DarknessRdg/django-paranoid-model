@@ -4,12 +4,9 @@ On your models.py file import Paranoid class from paranoid_models.models file, t
 
 ```py
 from django.db import models
-import paranoid_model.models 
-# from paranoid_models import models DON'T DO THAT!
-# it will override ' from django.db import models ' 
-# and will get and error to access models.Field() 
+from paranoid_model.models import Paranoid
 
-class Person(paranoid_model.models.Paranoid):  # make an inheritance
+class Person(Paranoid):  # make an inheritance
     # all the default fields come with inheritance:
     # created_at
     # updated_at
