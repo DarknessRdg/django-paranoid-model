@@ -11,7 +11,7 @@ Django abstract model with paranoid behavior, therefore when an instance is dele
 
 ---
 
-# Get Started
+# Getting Started
 
 ```
 pip install django-paranoid-model
