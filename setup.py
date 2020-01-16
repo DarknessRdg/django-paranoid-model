@@ -5,14 +5,14 @@ with open('README.md', 'r') as fh:
 
 setuptools.setup(
     name='django-paranoid-model',
-    version='0.0.3',
+    version='1.0.1',
     url='https://github.com/DarknessRdg/django-paranoid-model',
     keywords='django paranoid safedelete softdelete',
 
     author='Luan Rodrigues',
     author_email='luanrodriguesbusiness@hotmail.com',
     
-    description='Django abstract model with paranoid behavior,',
+    description='Django abstract model with paranoid behavior',
     long_description=long_description,
     long_description_content_type='text/markdown',
     
