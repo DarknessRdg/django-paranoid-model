@@ -48,6 +48,31 @@ class RelatedModelTest(TestCase):
         
         self.assertTrue(person.is_soft_deleted and phone1.is_soft_deleted)
     
+    def test_if_delete_affects_other_querrie(self):
+        """Test if all other querries are updated when delete an instance"""
+        person = get_person_instance()
+        person.save()
+        for i in range(3):
+            get_phone_instance(person).save()
+        
+        all_phones = person.phones.all()
+        self.assertEquals(all_phones.count(), 3)
+        
+        person.delete()
+        self.assertEquals(all_phones.count(), 0)
+
+        person = get_person_instance()
+        person.save()
+        for i in range(3):
+            get_phone_instance(person).save()
+
+        all_phones = person.phones.all(with_deleted=True)
+        self.assertEquals(all_phones.count(), 3)
+        
+        person.delete()
+        self.assertEquals(all_phones.count(), 3)
+
+    
     def test_delete_cascade_with_many_objects(self):
         """Test delete cascade with many objects"""
         person = get_person_instance()
