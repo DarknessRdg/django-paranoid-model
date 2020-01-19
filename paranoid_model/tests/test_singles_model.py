@@ -1,7 +1,7 @@
 from django.test import TestCase
-from paranoid_model.test.models import Person
+from paranoid_model.tests.models import Person
 from faker import Faker
-from paranoid_model.test.utils import any_list, all_list, get_person_instance, create_list_of_person
+from paranoid_model.tests.utils import any_list, all_list, get_person_instance, create_list_of_person
 
 
 class SingleModelTest(TestCase):
@@ -226,3 +226,18 @@ class SingleModelTest(TestCase):
         self.assertRaises(
             Person.MultipleObjectsReturned,
             lambda: Person.objects.get())
+    
+    def test_filter_deleted_only(self):
+        """Test filter deleted_only"""
+        
+        save, delete = 100, 200
+        create_list_of_person(save, delete)
+
+        deleted = Person.objects.deleted_only()
+        self.assertEquals(deleted.count(), delete)
+        
+        deleted = Person.objects.all(with_deleted=True).deleted_only()
+        self.assertEquals(deleted.count(), delete)
+
+        deleted_zero = Person.objects.all().deleted_only()
+        self.assertEquals(deleted_zero.count(), 0)

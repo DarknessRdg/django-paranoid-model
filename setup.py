@@ -4,22 +4,22 @@ with open('README.md', 'r') as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name='django-paranoid-model', # Replace with your own username
-    version='0.0.1',
+    name='django-paranoid-model',
+    version='1.0.1',
     url='https://github.com/DarknessRdg/django-paranoid-model',
     keywords='django paranoid safedelete softdelete',
 
     author='Luan Rodrigues',
     author_email='luanrodriguesbusiness@hotmail.com',
     
-    description='Django abstract model with paranoid behavior,',
+    description='Django abstract model with paranoid behavior',
     long_description=long_description,
     long_description_content_type='text/markdown',
     
     packages=setuptools.find_packages(),
     
     classifiers=[
-        'Development Status :: 4 - Beta Test',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3',
         'License :: OSI Approved :: MIT License',

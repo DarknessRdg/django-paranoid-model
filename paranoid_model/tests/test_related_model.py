@@ -1,7 +1,7 @@
 from django.test import TestCase
-from paranoid_model.test.models import Person, Phone
+from paranoid_model.tests.models import Person, Phone
 from faker import Faker
-from paranoid_model.test.utils import (
+from paranoid_model.tests.utils import (
     any_list, all_list, get_person_instance, create_list_of_person,
     get_phone_instance, get_address_instance
 )
@@ -236,3 +236,22 @@ class RelatedModelTest(TestCase):
         self.assertRaises(
             Phone.DoesNotExist,
             lambda: person.phones.get_or_restore(phone='a'))
+
+    def test_filter_deleted_only(self):
+        """Test .deleted_only() with related name queries"""
+        
+        person = get_person_instance()
+        person.save()
+
+        for counter in range(100):
+            phone = get_phone_instance(person)
+            phone.save()
+
+            if counter % 2 == 0:
+                phone.delete()
+        
+        deleted = person.phones.deleted_only()
+        self.assertEquals(deleted.count(), 50)
+
+        deleted_zero = person.phones.all().deleted_only()
+        self.assertEquals(deleted_zero.count(), 0)

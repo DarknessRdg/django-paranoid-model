@@ -1,0 +1,15 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+
+    <div class="submit-row">
+        {% url opts|admin_urlname:'delete' original.pk|admin_urlquote as delete_url %}
+        <p class="deletelink-box"><a href="{% add_preserved_filters delete_url %}?hard_delete=True" class="deletelink">{% trans "Delete permanently" %}</a></p>
+        <input style="background: rgb(112, 191, 43); color: white;" type="submit" value="{% trans 'Restore' %}" name="_restore" />
+    </div>
+
+{% endblock %}

@@ -138,7 +138,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         """
 
         if not hard_delete:
-            cont = 1
+            cont = 0
             for instance in self:
                 instance.delete()
                 cont += 1
@@ -156,10 +156,19 @@ class ParanoidQuerySet(models.query.QuerySet):
             int(): amount restored
         """
 
-        cont = 1
+        cont = 0
         for instance in self:
-            instance.restore()
-            cont += 1
+            if instance.is_soft_deleted:
+                instance.restore()
+                cont += 1
         # Clear the result cache, in case this QuerySet gets reused.
         self._result_cache = None
         return cont
+
+    def deleted_only(self):
+        """
+        Filter only deleted instances
+        Returns:
+            ParanoidQuerySet[]
+        """
+        return self.exclude(deleted_at__isnull=True)
