@@ -1,10 +1,6 @@
 from django.test import TestCase
 from paranoid_model.tests.models import Person, Phone
-from faker import Faker
-from paranoid_model.tests.utils import (
-    any_list, all_list, get_person_instance, create_list_of_person,
-    get_phone_instance, get_address_instance
-)
+from paranoid_model.tests.utils import get_person_instance, get_phone_instance, get_address_instance
 
 
 class RelatedModelTest(TestCase):
