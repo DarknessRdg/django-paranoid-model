@@ -41,3 +41,7 @@ class Address(paranoid_model.Paranoid):
     """
     street = models.CharField(max_length=255)
     owner = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='addresses')
+
+
+class Car(paranoid_model.Paranoid):
+    owner = models.OneToOneField(Person, on_delete=models.CASCADE)
