@@ -2,6 +2,7 @@ from django.test import TestCase
 from paranoid_model.tests.models import Person
 from faker import Faker
 from paranoid_model.tests.utils import any_list, all_list, get_person_instance, create_list_of_person
+import time
 
 
 class SingleModelTest(TestCase):
@@ -29,6 +30,21 @@ class SingleModelTest(TestCase):
         self.assertIsNotNone(person.created_at)
         self.assertIsNotNone(person.updated_at)
         self.assertIsNone(person.deleted_at)
+    
+    def test_created_at_and_updated_at(self):
+        """Test fields created_at and updated_ad"""
+        person = get_person_instance()
+        person.save()
+        
+        self.assertEquals(person.created_at.replace(microsecond=0),
+                          person.updated_at.replace(microsecond=0))
+        # Replace microseds possibles machine dellays don't interfere
+        
+        seconds = 2
+        time.sleep(seconds)  # wait seconds before save again so time should be diferents
+        person.save()
+        
+        self.assertNotEquals(person.created_at, person.updated_at)
 
     def test_soft_delete(self):
         """Test delete of a paranoid model"""
@@ -63,9 +79,8 @@ class SingleModelTest(TestCase):
         Person.objects.all(with_deleted=True).restore()
         self.assertEquals(Person.objects.all().count(), save)
 
-
     def test_soft_delete_in_a_queryset(self):
-        """Test delete all instances in a querryset"""
+        """Test soft delete all instances in a querryset"""
         save, delete = 100, 0
         create_list_of_person(save, delete)
 
