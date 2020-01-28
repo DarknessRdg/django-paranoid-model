@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/DarknessRdg/django-paranoid-model.svg?branch=master)](https://travis-ci.org/DarknessRdg/django-paranoid-model)
+
 # django-paranoid-model
 Django abstract model with paranoid behavior, therefore when an instance is deleted it is not really deleted from database, it's applied a mask on the filter so when filter, the result are the "undeleted" instances.
 
