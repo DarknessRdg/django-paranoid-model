@@ -1,0 +1,63 @@
+site_name: Django paranoid model
+site_description: A Django model with paranoi behavior
+site_author: Luan Rodrigues
+site_url: https://darknessrdg.github.io/django-paranoid-model/
+
+# Page tree
+nav:
+  - Home: index.md
+  - Get Started: get_started.md
+  - Create your paranoid model: create_your_paranoid_model.md
+  - Instance manipulate: instance_manipulate.md
+  - Making queries: making_queries.md
+  - Admin: django_admin.md
+
+# Repository
+repo_name: 'DarknessRdg/django-paranoid-model'
+repo_url: 'https://github.com/DarknessRdg/django-paranoid-model'
+
+
+# Configuration
+theme:
+  name: 'material'
+  palette:
+    primary: 'teal'
+    accent: 'green'
+
+
+
+# Customization
+extra:
+  social:
+    - type: 'user'
+      link: 'https://darknessrdg.github.io/'
+    - type: 'github'
+      link: 'https://github.com/DarknessRdg'
+    - type: 'instagram'
+      link: 'https://www.instagram.com/luan_26/'
+    - type: 'facebook'
+      link: 'https://www.facebook.com/luan.dasilva.925'
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_generator: !!python/name:pymdownx.emoji.to_svg
+  - pymdownx.inlinehilite
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
