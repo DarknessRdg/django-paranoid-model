@@ -170,3 +170,4 @@ GitHub.sublime-settings
 
 
 dist/
+!mkdocs.yml
