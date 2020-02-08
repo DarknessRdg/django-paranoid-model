@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://darknessrdg.github.io/django-paranoid-model/create_your_paranoid_model/">
       
       
-        <meta name="author" content="Luan Rodrigues">
+        <meta name="author" content="https://darknessrdg.github.io/">
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -330,12 +330,20 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/DarknessRdg/django-paranoid-model/edit/master/docs/create_your_paranoid_model.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/DarknessRdg/django-paranoid-model/docs/create_your_paranoid_model.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="create-your-paranoid-model">Create your Paranoid Model<a class="headerlink" href="#create-your-paranoid-model" title="Permanent link">&para;</a></h1>
-<p>On your models.py file import Paranoid class from paranoid_models.models file, then inheritance Paranoid class on your models</p>
-<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<p>On your models.py file import Paranoid class from <code>paranoid_models.models</code> file, then inheritance Paranoid class on your models</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
 <span class="kn">from</span> <span class="nn">paranoid_model.models</span> <span class="kn">import</span> <span class="n">Paranoid</span>
 
 <span class="k">class</span> <span class="nc">Person</span><span class="p">(</span><span class="n">Paranoid</span><span class="p">):</span>  <span class="c1"># make an inheritance</span>
@@ -345,12 +353,16 @@
     <span class="c1"># deleted_at</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
 </pre></div>
+</td></tr></table>
 
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <ul>
-<li>created_at is the field with creation date</li>
-<li>updated_at is the field with latest update date</li>
-<li>deleted_at is the field with deletion date, so when it is None it means it hasn't been deleted</li>
+<li><strong>created_at</strong> : is the field with creation date</li>
+<li><strong>updated_at</strong> : is the field with latest update date</li>
+<li><strong>deleted_at</strong> : is the field with deletion date, so when it is None it means it hasn't been deleted</li>
 </ul>
+</div>
                 
                   
                 

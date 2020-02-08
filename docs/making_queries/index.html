@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://darknessrdg.github.io/django-paranoid-model/making_queries/">
       
       
-        <meta name="author" content="Luan Rodrigues">
+        <meta name="author" content="https://darknessrdg.github.io/">
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -459,23 +459,62 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/DarknessRdg/django-paranoid-model/edit/master/docs/making_queries.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/DarknessRdg/django-paranoid-model/docs/making_queries.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="making-queries">Making queries<a class="headerlink" href="#making-queries" title="Permanent link">&para;</a></h1>
 <p>In short, the queries are the same as django's queries. The difference is that by default behavior all soft deleted instances are excluded.</p>
 <p>To make a querry and include the deleted instance just need to give parameter <code>with_deleted</code> to the querry. This is a boolean parameter, so it can be True or False.</p>
-<p><strong>Obs: Soft deleted is a instance where the filed <code>deleted_at</code> is not None</strong></p>
+<div class="admonition info">
+<p class="admonition-title">Info</p>
+<p>Soft deleted is an instance where the filed <code>deleted_at</code> is not None</p>
+</div>
 <h3 id="all">All<a class="headerlink" href="#all" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>  <span class="c1"># returns all the instancnes that hasn&#39;t been soft deleted</span>
-<span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># this will exclude the soft deleted</span>
-<span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># will include the soft deleted</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="c1"># returns all the instancnes that hasn&#39;t been soft deleted</span>
 </pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="c1"># this will exclude the soft deleted</span>
+</pre></div>
+</td></tr></table>
+
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="c1"># will include the soft deleted</span>
+</pre></div>
+</td></tr></table>
 
 <p>As you can see, <code>.all()</code> will return the same instances that <code>all(with_deleted=False)</code></p>
-<p><strong>Obs on related_name queries:</strong> when an instance has been soft deleted, the related_querry <code>all()</code> will return <code>with_deleted=True</code> by default, because if the instance has been soft deleted, I guess, it want's to be querried the deleted objects, BUT you can alway pass the parameter <code>with_deleted</code> and it will work as you wish.</p>
-<p>It's something like this:
-<div class="codehilite"><pre><span></span><span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
+<details class="note"><summary>On related_name queries</summary><p>When an instance has been soft deleted, the related_querry <code>all()</code> will return 
+<code>with_deleted=True</code> by default.</p>
+<p>That happens ecause if the instance has been soft deleted it want's to be querried the deleted objects, 
+BUT you can alway use the parameter <code>with_deleted=False</code> and it all soft deleted are excluded.</p>
+<p>It's something like this:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;person&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="n">phone</span> <span class="o">=</span> <span class="n">Phone</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">phone</span><span class="o">=</span><span class="s1">&#39;123&#39;</span><span class="p">,</span> <span class="n">owner</span><span class="o">=</span><span class="n">person</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -485,24 +524,62 @@
 
 <span class="n">person</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># will delete all the phones that belongs to person</span>
 
-<span class="c1"># since person has been deleted, a related_name querry will work a little different</span>
-<span class="n">person</span><span class="o">.</span><span class="n">phones</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>  <span class="c1"># will return all and include the soft deleted</span>
-<span class="n">person</span><span class="o">.</span><span class="n">phones</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># will return all and include soft deleted</span>
-<span class="n">person</span><span class="o">.</span><span class="n">phones</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># will return all not soft deleted</span>
+<span class="c1"># since person has been deleted, </span>
+<span class="c1"># a related_name querry will work a little different</span>
+
+<span class="n">person</span><span class="o">.</span><span class="n">phones</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>  
+<span class="c1"># will return all and include the soft deleted</span>
+
+<span class="n">person</span><span class="o">.</span><span class="n">phones</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  
+<span class="c1"># will return all and include soft deleted</span>
+
+<span class="n">person</span><span class="o">.</span><span class="n">phones</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  
+<span class="c1"># will return all not soft deleted</span>
 </pre></div>
-The explanation why Paranoid Query does it, is because imagine we have a <em>person</em> and we have <em>2 phones related to that person</em>, and that <em>person has been soft deleted</em>, and by cascade person's phones also soft deleted.</p>
+</td></tr></table>
+
+<details class="quote"><summary>Why paranoid does it</summary><p>The explanation why Paranoid Query does it, is because imagine we have a <em>person</em> and we have <em>2 phones related to that person</em>, and that <em>person has been soft deleted</em>, and by cascade person's phones also soft deleted.</p>
 <p>Now imagine that in the future, that person wants a report of your datas once saved in database, so when we filter his data, we will need, also, his data deleted.</p>
 <p>That is why paranoid query will include soft deleted when querring related_name with a soft delete instance.</p>
+</details>
+</details>
 <h3 id="filter">Filter<a class="headerlink" href="#filter" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># will return the filtered instancnes that hasn&#39;t been soft deleted</span>
-<span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># this will exclude the soft deleted</span>
-<span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  <span class="c1"># will include the soft deleted</span>
+<p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="c1"># Will return the filtered instancnes that has not been soft deleted</span>
 </pre></div>
-
-<p>As you can see, <code>.filter(**kwargs)</code> will return the same instances that <code>filter(with_deleted=False, **kwargs)</code></p>
+</td></tr></table>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="c1"># Will exclude the soft deleted</span>
+</pre></div>
+</td></tr></table>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="c1">#  Will include the soft deleted</span>
+</pre></div>
+</td></tr></table></p>
+<div class="admonition note">
+<p class="admonition-title">On related_name queries</p>
+<p>It works just like <code>.all()</code> querry.</p>
+<p><a href="#all">chekcou here</a></p>
+</div>
+<p>As you can see, <code class="codehilite"><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code> will return the same instances that <code class="codehilite"><span class="nb">filter</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></code></p>
 <h3 id="deleted_only">Deleted_only<a class="headerlink" href="#deleted_only" title="Permanent link">&para;</a></h3>
 <p>To filter only deleted you must use <code>deleted_only</code> filter. Thats because <code>filter</code> override querry parameter <code>deleted_at</code> and change it.</p>
-<div class="codehilite"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 
     <span class="k">if</span> <span class="n">i</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
@@ -516,82 +593,163 @@ The explanation why Paranoid Query does it, is because imagine we have a <em>per
 <span class="c1"># this param &#39;deleted_at__isnull&#39; is overwritten by querry filter</span>
 <span class="c1"># that&#39;s because every param wich starts with &#39;deleted_at&#39; are removed</span>
 </pre></div>
+</td></tr></table>
 
+<div class="admonition failure">
+<p class="admonition-title">Failure</p>
+<p><strong>Do not do that</strong></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">deleted_at__isnull</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>The param <code>deleted_at__isnull</code> is overwritten by querry filter.</p>
+<p>That happens because every param wich starts with <code>deleted_at</code> are removed</p>
+</div>
 <h3 id="get">Get<a class="headerlink" href="#get" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
 <span class="c1"># will retrun a single instance of the object that matches with the querry</span>
 </pre></div>
+</td></tr></table>
 
 <p>Careful with get() method, because it can raise some errors.
-The possible raises are: 
-* <strong>model.DoesNotExist</strong>: (Django) will be raised if the querry doesn't match to any instance
-* <strong>model.MultipleObjectsReturned</strong>: (Django) will be raised if more than 1 instances matches with the querry
-* <strong>model.SoftDeleted</strong>: will be raised if the instance has been soft deleted.</p>
+The possible raises are:</p>
+<ul>
+<li>
+<p><strong>model.DoesNotExist</strong>: (Django) will be raised if the querry doesn't match to any instance</p>
+</li>
+<li>
+<p><strong>model.MultipleObjectsReturned</strong>: (Django) will be raised if more than 1 instances matches with the querry</p>
+</li>
+<li>
+<p><strong>model.SoftDeleted</strong>: will be raised if the instance has been soft deleted.</p>
+</li>
+</ul>
 <p>You can do the following:
-<div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
     <span class="c1"># The querry didn&#39;t find any instance with pk = 10</span>
     <span class="k">pass</span>
 </pre></div>
+</td></tr></table>
 or
-<div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">SoftDeleted</span><span class="p">:</span>
     <span class="c1"># The querry found an instance, but it has been soft deleted</span>
     <span class="c1"># it means you need to querry with method get_deleted() or get_or_restore()</span>
     <span class="k">pass</span>
-</pre></div></p>
+</pre></div>
+</td></tr></table></p>
 <p>But, if you pay attention it doesn't allow you to get an instance that has been soft deleted. Don't worry, no need to cry! <img alt="😭" class="emojione" src="https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/svg/1f62d.svg" title=":sob:" /> <code>get_deleted</code> and <code>get_or_restore</code> will save you!</p>
 <h3 id="get_deleted">Get_deleted<a class="headerlink" href="#get_deleted" title="Permanent link">&para;</a></h3>
-<div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_deleted</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_deleted</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>  
 <span class="c1"># will retrun a single instance of the object that matches with the querry</span>
 </pre></div>
+</td></tr></table>
 
 <p>Careful with get_deleted() method, because it can raise some errors.
-The possible raises are: 
-* <strong>model.DoesNotExist</strong>: (Django) will be raised if the querry doesn't match to any instance
-* <strong>model.MultipleObjectsReturned</strong>: (Django) will be raised if more than 1 instances matches with the querry
-* <strong>model.IsNotSoftDeleted</strong>: will be raised if the instance has not been soft deleted yet.</p>
+The possible raises are:</p>
+<ul>
+<li>
+<p><strong>model.DoesNotExist</strong>: (Django) will be raised if the querry doesn't match to any instance</p>
+</li>
+<li>
+<p><strong>model.MultipleObjectsReturned</strong>: (Django) will be raised if more than 1 instances matches with the querry</p>
+</li>
+<li>
+<p><strong>model.IsNotSoftDeleted</strong>: will be raised if the instance has not been soft deleted yet.</p>
+</li>
+</ul>
 <p>You can do the following:
-<div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_deleted</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
     <span class="c1"># The querry didn&#39;t find any instance with pk = 10</span>
     <span class="k">pass</span>
 </pre></div>
+</td></tr></table>
 or
-<div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_deleted</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">IsNotSoftDeleted</span><span class="p">:</span>
     <span class="c1"># The querry found an instance, but it has not been soft deleted yet</span>
     <span class="c1"># it means you need to querry with method get()</span>
     <span class="k">pass</span>
-</pre></div></p>
+</pre></div>
+</td></tr></table></p>
 <h3 id="get_or_restore">Get_or_restore<a class="headerlink" href="#get_or_restore" title="Permanent link">&para;</a></h3>
 <p>This method will work just like Django's wiht a thiny difference, it will restore the instance if it has been soft deleted</p>
-<div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_restore</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_or_restore</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 </pre></div>
+</td></tr></table>
 
-<p>Like all get method, it can raises some exceptions:
-* <strong>model.DoesNotExist</strong>: (Django) will be raised if the querry doesn't match to any instance
-* <strong>model.MultipleObjectsReturned</strong>: (Django) will be raised if more than 1 instances matches with the querry</p>
-<p><div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<p>Like all get method, it can raises some exceptions:</p>
+<ul>
+<li>
+<p><strong>model.DoesNotExist</strong>: (Django) will be raised if the querry doesn't match to any instance</p>
+</li>
+<li>
+<p><strong>model.MultipleObjectsReturned</strong>: (Django) will be raised if more than 1 instances matches with the querry</p>
+</li>
+</ul>
+<p><table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_deleted</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
     <span class="c1"># The querry didn&#39;t find any instance with pk = 10</span>
     <span class="k">pass</span>
 </pre></div>
+</td></tr></table>
 or
-<div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">try</span><span class="p">:</span>
     <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_deleted</span><span class="p">(</span><span class="n">name__icontains</span><span class="o">=</span><span class="s1">&#39;a&#39;</span><span class="p">)</span>
 <span class="k">except</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">MultipleObjectsReturned</span><span class="p">:</span>
     <span class="c1"># The querry found more than 1 instance</span>
     <span class="k">pass</span>
-</pre></div></p>
+</pre></div>
+</td></tr></table></p>
 <h3 id="restore">Restore<a class="headerlink" href="#restore" title="Permanent link">&para;</a></h3>
 <p>This method restore all the instances soft deleted int the current querry set. Look at the example bellow</p>
-<div class="codehilite"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
     <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 
 <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
@@ -604,6 +762,7 @@ or
 <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">20</span><span class="p">:</span>
 <span class="o">&gt;&gt;</span> <span class="kc">True</span>
 </pre></div>
+</td></tr></table>
                 
                   
                 

@@ -2,32 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
      <loc>https://darknessrdg.github.io/django-paranoid-model/</loc>
-     <lastmod>2020-02-06</lastmod>
+     <lastmod>2020-02-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://darknessrdg.github.io/django-paranoid-model/get_started/</loc>
-     <lastmod>2020-02-06</lastmod>
+     <lastmod>2020-02-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://darknessrdg.github.io/django-paranoid-model/create_your_paranoid_model/</loc>
-     <lastmod>2020-02-06</lastmod>
+     <lastmod>2020-02-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://darknessrdg.github.io/django-paranoid-model/instance_manipulate/</loc>
-     <lastmod>2020-02-06</lastmod>
+     <lastmod>2020-02-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://darknessrdg.github.io/django-paranoid-model/making_queries/</loc>
-     <lastmod>2020-02-06</lastmod>
+     <lastmod>2020-02-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
     <url>
      <loc>https://darknessrdg.github.io/django-paranoid-model/django_admin/</loc>
-     <lastmod>2020-02-06</lastmod>
+     <lastmod>2020-02-08</lastmod>
      <changefreq>daily</changefreq>
     </url>
 </urlset>

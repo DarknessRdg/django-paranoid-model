@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://darknessrdg.github.io/django-paranoid-model/instance_manipulate/">
       
       
-        <meta name="author" content="Luan Rodrigues">
+        <meta name="author" content="https://darknessrdg.github.io/">
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -306,7 +306,7 @@
       
         <li class="md-nav__item">
   <a href="#deletehard_deletetrue" class="md-nav__link">
-    Delete(hard_delete=True)
+    delete(hard_delete=True)
   </a>
   
 </li>
@@ -396,7 +396,7 @@
       
         <li class="md-nav__item">
   <a href="#deletehard_deletetrue" class="md-nav__link">
-    Delete(hard_delete=True)
+    delete(hard_delete=True)
   </a>
   
 </li>
@@ -431,22 +431,39 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/DarknessRdg/django-paranoid-model/edit/master/docs/instance_manipulate.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/DarknessRdg/django-paranoid-model/docs/instance_manipulate.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="instance-manipulate">Instance Manipulate<a class="headerlink" href="#instance-manipulate" title="Permanent link">&para;</a></h1>
 <p>ParanoidModel has some some differences on default Django methods.</p>
 <h3 id="save">Save<a class="headerlink" href="#save" title="Permanent link">&para;</a></h3>
 <p>This method has no difference, it work just like Django's</p>
-<div class="codehilite"><pre><span></span><span class="n">my_paranoid_instance</span> <span class="o">=</span> <span class="n">Paranoid</span><span class="p">()</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">my_paranoid_instance</span> <span class="o">=</span> <span class="n">Paranoid</span><span class="p">()</span>
 <span class="n">my_paranoid_instance</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 </pre></div>
+</td></tr></table>
 
 <h3 id="delete">Delete<a class="headerlink" href="#delete" title="Permanent link">&para;</a></h3>
 <p>The <strong>most important</strong> method. This is why pararanoid model exists. When <code>delete()</code> an instance it should not be really deleted from database, but hide from user. </p>
 <p>The magic is in the attribute <code>deleted_at</code>. When there is no date (deleted_at is None) it means it has not been deleted, but if has a date it means it has been deleted. So when we call delete(), it will set up the current date to delete_at field and save the instance, instead of deleted.  </p>
-<p><strong>The delete works on <em>CASCADE</em>. So all the related objects will be soft deleted</strong></p>
-<div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>The delete works on <strong>CASCADE</strong> . That means all related objects are going to be soft deleted as well</p>
+</div>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># instance has the current </span>
 <span class="c1"># date on the field deleted_at but it still saved on database </span>
 <span class="n">instance</span><span class="o">.</span><span class="n">deleted_at</span> <span class="ow">is</span> <span class="kc">None</span>
@@ -460,21 +477,38 @@
 <span class="n">person</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># this will soft delete person</span>
 <span class="c1"># but will also delete all the 5 phones related to this person</span>
 </pre></div>
+</td></tr></table>
 
-<h3 id="deletehard_deletetrue">Delete(hard_delete=True)<a class="headerlink" href="#deletehard_deletetrue" title="Permanent link">&para;</a></h3>
+<h3 id="deletehard_deletetrue">delete(hard_delete=True)<a class="headerlink" href="#deletehard_deletetrue" title="Permanent link">&para;</a></h3>
+<p>You can also delete datas from database.</p>
 <p>If you really wants to delete the instance from databse you can use parameter <code>hard_delete</code>. It calls Django's default method</p>
-<div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 <span class="n">intance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>  <span class="c1"># will soft delete</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">hard_delete</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># will call django delete, </span>
 <span class="c1"># so it will be deleted from database</span>
 </pre></div>
+</td></tr></table>
 
-<p>Be careful using <code>hard_delete</code></p>
+<div class="admonition danger">
+<p class="admonition-title">Danger</p>
+<p>Be careful using <code>hard_delete</code> .</p>
+<p>If <code>hard_delete</code> is True, it will call Django's default delete method, so instance will be deleted from database.</p>
+</div>
 <h3 id="is_soft_deletd">is_soft_deletd<a class="headerlink" href="#is_soft_deletd" title="Permanent link">&para;</a></h3>
 <p>This is a @property that returns a boolean if current instance has been soft deleted or not. Otherwise, it returns if attribute deleted_at is None. 
 It is just a more easy way to check if deleted_at is None instead of use this whole sentence to check.</p>
 <p>So you can just do the following:</p>
-<div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 
 <span class="n">instance</span><span class="o">.</span><span class="n">is_soft_deleted</span>
 <span class="o">&gt;&gt;</span> <span class="kc">False</span>
@@ -482,18 +516,31 @@ It is just a more easy way to check if deleted_at is None instead of use this wh
 <span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">is_soft_deleted</span>
 <span class="o">&gt;&gt;</span> <span class="kc">True</span>
+</pre></div>
+</td></tr></table>
 
-<span class="c1"># real example</span>
-<span class="n">person</span> <span class="o">=</span> <span class="n">Person</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;My name&#39;</span><span class="p">)</span>
-<span class="n">person</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+<p>This property is useful it in a code like this:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">myself</span> <span class="o">=</span> <span class="n">Person</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">with_deleted</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;My name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
 
-<span class="k">if</span> <span class="n">person</span><span class="o">.</span><span class="n">is_soft_deleted</span><span class="p">:</span>
+<span class="k">if</span> <span class="n">myself</span><span class="o">.</span><span class="n">is_soft_deleted</span><span class="p">:</span>
     <span class="n">person</span><span class="o">.</span><span class="n">restore</span><span class="p">()</span>
 </pre></div>
+</td></tr></table>
 
 <h3 id="restore">Restore<a class="headerlink" href="#restore" title="Permanent link">&para;</a></h3>
-<p>Once an instance has been soft deleted, it can be easily undeleted with method restore()</p>
-<div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<p>Once an instance has been soft deleted, it can be easily undeleted with method <code>restore()</code></p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">instance</span> <span class="o">=</span> <span class="n">ParanoidModel</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
 
 <span class="n">instance</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
 <span class="n">instance</span><span class="o">.</span><span class="n">is_soft_deleted</span>
@@ -503,6 +550,7 @@ It is just a more easy way to check if deleted_at is None instead of use this wh
 <span class="n">instance</span><span class="o">.</span><span class="n">is_soft_deleted</span>
 <span class="o">&gt;&gt;</span> <span class="kc">False</span>
 </pre></div>
+</td></tr></table>
                 
                   
                 

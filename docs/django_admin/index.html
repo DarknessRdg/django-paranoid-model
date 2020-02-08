@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://darknessrdg.github.io/django-paranoid-model/django_admin/">
       
       
-        <meta name="author" content="Luan Rodrigues">
+        <meta name="author" content="https://darknessrdg.github.io/">
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -403,26 +403,42 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/DarknessRdg/django-paranoid-model/edit/master/docs/django_admin.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/DarknessRdg/django-paranoid-model/docs/django_admin.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="django-admin">Django Admin<a class="headerlink" href="#django-admin" title="Permanent link">&para;</a></h1>
 <h3 id="register-your-models">Register your models<a class="headerlink" href="#register-your-models" title="Permanent link">&para;</a></h3>
 <p>To register your model on django admin, is recomended to let ParanoidAdmin handle with admin action. Otherwise you may have
 some trouble.</p>
-<p>ParanoidAdmin also include some aditional methods to look more "paranoid" on admin page, some functions are:
-  * Delete: soft delete instance
-  * Permanently delete: hard delete
-  * Restore: remode deleted_at date
-  * Filter: filter all, only deleted, not deleted</p>
+<p>ParanoidAdmin also include some aditional methods to look more "paranoid" on admin page, some functions are:</p>
+<ul>
+<li>
+<p>Delete: soft delete instance</p>
+</li>
+<li>
+<p>Permanently delete: hard delete</p>
+</li>
+<li>
+<p>Restore: remode deleted_at date</p>
+</li>
+<li>
+<p>Filter: filter all, only deleted, not deleted</p>
+</li>
+</ul>
 <p>On you  <code>admin.py</code> register you models like the example below:</p>
-<div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">ParanoidAdmin</span><span class="p">)</span>
 </pre></div>
+</td></tr></table>
 
 <p>This will allow ParanoidAdmin to handle with admin actions.</p>
 <p>Once done that, it should looks something like this:</p>
@@ -430,7 +446,17 @@ some trouble.</p>
 <h3 id="customize-list">Customize list<a class="headerlink" href="#customize-list" title="Permanent link">&para;</a></h3>
 <p>You can customize the way objects are displayed changing the attribute <code>list_display</code> on admin. To do that, you're gonna
 have to make an inheritance of ParanoidAdmin and change this attribute.</p>
-<div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -442,19 +468,55 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
 </pre></div>
+</td></tr></table>
 
 <p>This is how it will look like:</p>
 <p><img alt="Screenshot" src="../img/change_list_display.png" /></p>
 <p>If you like the Paranoid's default list display but just want to add some more attributes, you can do the following:</p>
-<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MyAdmin</span><span class="p">(</span><span class="n">ParanoidAdmin</span><span class="p">):</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MyAdmin</span><span class="p">(</span><span class="n">ParanoidAdmin</span><span class="p">):</span>
     <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;phone&#39;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">ParanoidAdmin</span><span class="o">.</span><span class="n">list_display</span>
 </pre></div>
+</td></tr></table>
 
 <p><a href="https://docs.djangoproject.com/en/3.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_display">Checkout Official Docs here</a></p>
 <h3 id="customize-filter">Customize filter<a class="headerlink" href="#customize-filter" title="Permanent link">&para;</a></h3>
 <p>You can customize filter window as you want like remove, add more filter.</p>
 <p><strong>Add more filter:</strong></p>
-<div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -489,13 +551,24 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
 </pre></div>
+</td></tr></table>
 
 <p>Look at the result:</p>
 <p><img alt="Screenshot" src="../img/additional_filter.png" /></p>
 <p><a href="https://docs.djangoproject.com/en/3.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_filter">Checkout Official Docs here</a></p>
 <p><strong>Remove filter window:</strong></p>
 <p>Remove filter window is a peace of cake</p>
-<div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -507,9 +580,21 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
 </pre></div>
+</td></tr></table>
 
 <p>And if you also set <code>list_display</code> to be Django's default it will be just like Django's default model page.</p>
-<div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -522,6 +607,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
 </pre></div>
+</td></tr></table>
 
 <p>Django's default view:</p>
 <p><img alt="Screenshot" src="../img/default_django.png" /></p>

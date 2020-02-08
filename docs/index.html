@@ -16,7 +16,7 @@
         <link rel="canonical" href="https://darknessrdg.github.io/django-paranoid-model/">
       
       
-        <meta name="author" content="Luan Rodrigues">
+        <meta name="author" content="https://darknessrdg.github.io/">
       
       
         <meta name="lang:clipboard.copy" content="Copy to clipboard">
@@ -375,13 +375,13 @@
             <article class="md-content__inner md-typeset">
               
                 
-                  <a href="https://github.com/DarknessRdg/django-paranoid-model/edit/master/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
+                  <a href="https://github.com/DarknessRdg/django-paranoid-model/docs/index.md" title="Edit this page" class="md-icon md-content__icon">&#xE3C9;</a>
                 
                 
                 <h1 id="django-paranoid-model">django-paranoid-model<a class="headerlink" href="#django-paranoid-model" title="Permanent link">&para;</a></h1>
 <p>Django abstract model with paranoid behavior, therefore when an instance is deleted it is not really deleted from database, it's applied a mask on the filter so when filter, the result are the "undeleted" instances.</p>
 <p>This package is useful when you want to keep all datas saved on your database and when user wants do delete, it is just hidden form user.</p>
-<p>It include some helpers fields to your model:</p>
+<p>It includes some helpers fields to your model:</p>
 <ul>
 <li>created_at</li>
 <li>updated_at</li>
@@ -389,15 +389,20 @@
 </ul>
 <h2 id="quick-start">Quick start<a class="headerlink" href="#quick-start" title="Permanent link">&para;</a></h2>
 <p>Install Django Paranoid Model package from pip</p>
-<div class="codehilite"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">django</span><span class="o">-</span><span class="n">paranoid</span><span class="o">-</span><span class="n">model</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">django</span><span class="o">-</span><span class="n">paranoid</span><span class="o">-</span><span class="n">model</span>
 </pre></div>
+</td></tr></table>
 
 <p>Add paranoid_model to your installed apps so you can use django admin with a paranoid behavior</p>
-<div class="codehilite"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">[</span>
     <span class="o">...</span>
     <span class="s1">&#39;paranoid_model&#39;</span>
 <span class="p">]</span>
 </pre></div>
+</td></tr></table>
 
 <p>Good job ! You're now ready to use it.</p>
                 
