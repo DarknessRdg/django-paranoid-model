@@ -1,6 +1,5 @@
 site_name: Django paranoid model
 site_description: A Django model with paranoi behavior
-site_author: Luan Rodrigues
 site_url: https://darknessrdg.github.io/django-paranoid-model/
 edit_uri: 'docs/'
 
@@ -28,6 +27,8 @@ theme:
   palette:
     primary: 'teal'
     accent: 'green'
+  logo:
+    icon: 'code'
 
 
 # Customization
