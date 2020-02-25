@@ -38,7 +38,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.6.0">
+      <meta name="generator" content="mkdocs-1.1, mkdocs-material-4.6.3">
     
     
       
@@ -46,7 +46,7 @@
       
     
     
-      <link rel="stylesheet" href="../assets/stylesheets/application.1b62728e.css">
+      <link rel="stylesheet" href="../assets/stylesheets/application.adb8469c.css">
       
         <link rel="stylesheet" href="../assets/stylesheets/application-palette.a8b3c06d.css">
       
@@ -57,7 +57,7 @@
       
     
     
-      <script src="../assets/javascripts/modernizr.268332fc.js"></script>
+      <script src="../assets/javascripts/modernizr.86422ebf.js"></script>
     
     
       
@@ -91,7 +91,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#django-admin" tabindex="1" class="md-skip">
+      <a href="#django-admin" tabindex="0" class="md-skip">
         Skip to content
       </a>
     
@@ -100,9 +100,9 @@
   <nav class="md-header-nav md-grid">
     <div class="md-flex">
       <div class="md-flex__cell md-flex__cell--shrink">
-        <a href="https://darknessrdg.github.io/django-paranoid-model/" title="Django paranoid model" class="md-header-nav__button md-logo">
+        <a href="https://darknessrdg.github.io/django-paranoid-model/" title="Django paranoid model" aria-label="Django paranoid model" class="md-header-nav__button md-logo">
           
-            <i class="md-icon"></i>
+            <i class="md-icon">code</i>
           
         </a>
       </div>
@@ -131,7 +131,7 @@
   <label class="md-search__overlay" for="__search"></label>
   <div class="md-search__inner" role="search">
     <form class="md-search__form" name="search">
-      <input type="text" class="md-search__input" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
+      <input type="text" class="md-search__input" aria-label="search" name="query" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="query" data-md-state="active">
       <label class="md-icon md-search__icon" for="__search"></label>
       <button type="reset" class="md-icon md-search__icon" data-md-component="reset" tabindex="-1">
         &#xE5CD;
@@ -194,7 +194,7 @@
   <label class="md-nav__title md-nav__title--site" for="__drawer">
     <a href="https://darknessrdg.github.io/django-paranoid-model/" title="Django paranoid model" class="md-nav__button md-logo">
       
-        <i class="md-icon"></i>
+        <i class="md-icon">code</i>
       
     </a>
     Django paranoid model
@@ -425,19 +425,19 @@ some trouble.</p>
 <p>Filter: filter all, only deleted, not deleted</p>
 </li>
 </ul>
-<p>On you  <code>admin.py</code> register you models like the example below:</p>
+<p>On you <code>admin.py</code> register you models like the example below:</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
 2
 3
 4
 5
-6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">ParanoidAdmin</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
 
 <p>This will allow ParanoidAdmin to handle with admin actions.</p>
@@ -456,7 +456,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
  8
  9
 10
-11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -467,16 +467,16 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
 
 <p>This is how it will look like:</p>
 <p><img alt="Screenshot" src="../img/change_list_display.png" /></p>
 <p>If you like the Paranoid's default list display but just want to add some more attributes, you can do the following:</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">MyAdmin</span><span class="p">(</span><span class="n">ParanoidAdmin</span><span class="p">):</span>
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="k">class</span> <span class="nc">MyAdmin</span><span class="p">(</span><span class="n">ParanoidAdmin</span><span class="p">):</span>
     <span class="n">list_display</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;phone&#39;</span><span class="p">,)</span> <span class="o">+</span> <span class="n">ParanoidAdmin</span><span class="o">.</span><span class="n">list_display</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
 
 <p><a href="https://docs.djangoproject.com/en/3.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_display">Checkout Official Docs here</a></p>
@@ -516,7 +516,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 31
 32
 33
-34</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+34</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -525,7 +525,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 <span class="k">class</span> <span class="nc">MyFilter</span><span class="p">(</span><span class="n">ParanoidAdminFilter</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">lookups</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">,</span> <span class="n">mode_admin</span><span class="p">):</span>
-        <span class="c1"># Method to get tuple with all (`search_param`, `name to show`) </span>
+        <span class="c1"># Method to get tuple with all (`search_param`, `name to show`)</span>
         <span class="c1"># to list on filter window</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">lookups</span><span class="p">(</span><span class="n">request</span><span class="p">,</span> <span class="n">mode_admin</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span>
@@ -550,7 +550,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
 
 <p>Look at the result:</p>
@@ -568,7 +568,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
  8
  9
 10
-11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -579,7 +579,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
 
 <p>And if you also set <code>list_display</code> to be Django's default it will be just like Django's default model page.</p>
@@ -594,7 +594,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
  9
 10
 11
-12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># admin.py</span>
+12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><code><span class="c1"># admin.py</span>
 
 <span class="kn">from</span> <span class="nn">paranoid_model.admin</span> <span class="kn">import</span> <span class="n">ParanoidAdmin</span>
 <span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">MyModel</span>
@@ -606,7 +606,7 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
 
 
 <span class="n">admin</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">MyModel</span><span class="p">,</span> <span class="n">MyAdmin</span><span class="p">)</span>
-</pre></div>
+</code></pre></div>
 </td></tr></table>
 
 <p>Django's default view:</p>
@@ -655,22 +655,22 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
       <div class="md-footer-copyright">
         
         powered by
-        <a href="https://www.mkdocs.org">MkDocs</a>
+        <a href="https://www.mkdocs.org" target="_blank" rel="noopener">MkDocs</a>
         and
-        <a href="https://squidfunk.github.io/mkdocs-material/">
+        <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
           Material for MkDocs</a>
       </div>
       
   <div class="md-footer-social">
     <link rel="stylesheet" href="../assets/fonts/font-awesome.css">
     
-      <a href="https://darknessrdg.github.io/" class="md-footer-social__link fa fa-user"></a>
+      <a href="https://darknessrdg.github.io/" target="_blank" rel="noopener" title="user" class="md-footer-social__link fa fa-user"></a>
     
-      <a href="https://github.com/DarknessRdg" class="md-footer-social__link fa fa-github"></a>
+      <a href="https://github.com/DarknessRdg" target="_blank" rel="noopener" title="github" class="md-footer-social__link fa fa-github"></a>
     
-      <a href="https://www.instagram.com/luan_26/" class="md-footer-social__link fa fa-instagram"></a>
+      <a href="https://www.instagram.com/luan_26/" target="_blank" rel="noopener" title="instagram" class="md-footer-social__link fa fa-instagram"></a>
     
-      <a href="https://www.facebook.com/luan.dasilva.925" class="md-footer-social__link fa fa-facebook"></a>
+      <a href="https://www.facebook.com/luan.dasilva.925" target="_blank" rel="noopener" title="facebook" class="md-footer-social__link fa fa-facebook"></a>
     
   </div>
 
@@ -680,9 +680,9 @@ have to make an inheritance of ParanoidAdmin and change this attribute.</p>
       
     </div>
     
-      <script src="../assets/javascripts/application.808e90bb.js"></script>
+      <script src="../assets/javascripts/application.c33a9706.js"></script>
       
-      <script>app.initialize({version:"1.0.4",url:{base:".."}})</script>
+      <script>app.initialize({version:"1.1",url:{base:".."}})</script>
       
     
   </body>
