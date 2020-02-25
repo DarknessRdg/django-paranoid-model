@@ -16,6 +16,6 @@ class Person(Paranoid):  # make an inheritance
 
 !!! note
 
-    * **created_at** : is the field with creation date
-    * **updated_at** : is the field with latest update date
-    * **deleted_at** : is the field with deletion date, so when it is None it means it hasn't been deleted
+    - **created_at** : is the field with creation date
+    - **updated_at** : is the field with latest update date
+    - **deleted_at** : is the field with deletion date, so when it is None it means it hasn't been deleted
