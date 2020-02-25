@@ -1,13 +1,14 @@
 # django-paranoid-model
+
 Django abstract model with paranoid behavior, therefore when an instance is deleted it is not really deleted from database, it's applied a mask on the filter so when filter, the result are the "undeleted" instances.
 
 This package is useful when you want to keep all datas saved on your database and when user wants do delete, it is just hidden form user.
 
 It includes some helpers fields to your model:
 
-* created_at
-* updated_at
-* deleted_at
+- created_at
+- updated_at
+- deleted_at
 
 ## Quick start
 

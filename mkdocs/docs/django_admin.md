@@ -7,15 +7,15 @@ some trouble.
 
 ParanoidAdmin also include some aditional methods to look more "paranoid" on admin page, some functions are:
 
-* Delete: soft delete instance
+- Delete: soft delete instance
 
-* Permanently delete: hard delete
+- Permanently delete: hard delete
 
-* Restore: remode deleted_at date
+- Restore: remode deleted_at date
 
-* Filter: filter all, only deleted, not deleted
+- Filter: filter all, only deleted, not deleted
 
-On you  ``admin.py`` register you models like the example below:
+On you `admin.py` register you models like the example below:
 
 ```py
 # admin.py
@@ -34,9 +34,8 @@ Once done that, it should looks something like this:
 
 ### Customize list
 
-You can customize the way objects are displayed changing the attribute ``list_display`` on admin. To do that, you're gonna
+You can customize the way objects are displayed changing the attribute `list_display` on admin. To do that, you're gonna
 have to make an inheritance of ParanoidAdmin and change this attribute.
-
 
 ```py
 # admin.py
@@ -56,7 +55,6 @@ This is how it will look like:
 
 ![Screenshot](img/change_list_display.png)
 
-
 If you like the Paranoid's default list display but just want to add some more attributes, you can do the following:
 
 ```py
@@ -65,7 +63,6 @@ class MyAdmin(ParanoidAdmin):
 ```
 
 [Checkout Official Docs here](https://docs.djangoproject.com/en/3.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_display)
-
 
 ### Customize filter
 
@@ -83,17 +80,17 @@ from .models import MyModel
 class MyFilter(ParanoidAdminFilter):
 
     def lookups(self, request, mode_admin):
-        # Method to get tuple with all (`search_param`, `name to show`) 
+        # Method to get tuple with all (`search_param`, `name to show`)
         # to list on filter window
-        
+
         return super().lookups(request, mode_admin) + (
             ('additional', 'Additional filter'),  # add aditional filters to super() filter
         )
-    
+
     def queryset(self, request, queryset):
         # Method to handle the querrying and return the QuerySet[]
         # to be showed on site
-        
+
         if self.value() == 'additional':
             # filter additional objects
             pass
@@ -113,7 +110,6 @@ admin.site.register(MyModel, MyAdmin)
 Look at the result:
 
 ![Screenshot](img/additional_filter.png)
-
 
 [Checkout Official Docs here](https://docs.djangoproject.com/en/3.0/ref/contrib/admin/#django.contrib.admin.ModelAdmin.list_filter)
 
@@ -135,7 +131,7 @@ class MyAdmin(ParanoidAdmin):
 admin.site.register(MyModel, MyAdmin)
 ```
 
-And if you also set ``list_display`` to be Django's default it will be just like Django's default model page.
+And if you also set `list_display` to be Django's default it will be just like Django's default model page.
 
 ```py
 # admin.py
