@@ -5,7 +5,7 @@ from paranoid_model.tests.utils import get_person_instance, get_phone_instance, 
 
 class RelatedModelTest(TestCase):
     """Test model with relatioships ManyToMany, ForeignKey, OneToOne"""
-    
+
     def setUp(self):
         pass
 
@@ -28,7 +28,7 @@ class RelatedModelTest(TestCase):
 
         all_phones = person.phones.all()
         self.assertEquals(all_phones.count(), 1)
-    
+
     def test_delete_cascade(self):
         """Test delete with cascade"""
         person = get_person_instance()
@@ -36,12 +36,12 @@ class RelatedModelTest(TestCase):
 
         phone1 = get_phone_instance(person)
         phone1.save()
-        
+
         person.delete()
 
         self.assertNotRaises(lambda: person.phones.get_deleted(owner=person))
         phone1 = person.phones.get_deleted(owner=person)
-        
+
         self.assertTrue(person.is_soft_deleted and phone1.is_soft_deleted)
 
     def test_if_delete_affects_other_querrie(self):
@@ -206,7 +206,7 @@ class RelatedModelTest(TestCase):
 
         self.assertNotRaises(
             lambda: person.phones.get_deleted(phone=phone2.phone))
-        
+
         self.assertRaises(
             Phone.MultipleObjectsReturned,
             lambda: person.phones.get(owner=person))

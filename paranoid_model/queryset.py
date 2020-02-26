@@ -33,7 +33,7 @@ class ParanoidQuerySet(models.query.QuerySet):
                 self.model._meta.object_name)
 
         return objeto
-    
+
     def get_deleted(self, *arg, **kwargs):
         """
         Method to get a instance that has not been soft deleted yet.
@@ -54,9 +54,9 @@ class ParanoidQuerySet(models.query.QuerySet):
             raise IsNotSoftDeleted(
                 "Object %s has not been soft deleted yet. Try get()" %
                 self.model._meta.object_name)
-        
+
         return objeto
-    
+
     def get_or_restore(self, *args, **kwargs):
         """
         Method to get an instance, and if has been soft deleted it will be restored
@@ -73,7 +73,6 @@ class ParanoidQuerySet(models.query.QuerySet):
         objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
         if objeto.is_soft_deleted:
             objeto.restore()
-        
         return objeto
 
     def all(self, with_deleted=False):
@@ -91,7 +90,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         """
         Override default behavior of Django's filter() to filter not sotf deleted or include
         instaces that has been soft_deleted.
-        
+
         ``with_deleted`` has a default True because some Django's features call directly
         this method, like a ManyToMant field with related name, and in that case we want
         to have the default behavior and not be on Django's way. So we assume that 
@@ -123,7 +122,7 @@ class ParanoidQuerySet(models.query.QuerySet):
             elif isinstance(kwargs[key], models.Model) and not with_deleted:
                 if kwargs[key].is_soft_deleted:
                     with_deleted = True
-        
+
         if not with_deleted:
             kwargs['deleted_at__isnull'] = True
         return super(ParanoidQuerySet, self).filter(*args, **kwargs)
