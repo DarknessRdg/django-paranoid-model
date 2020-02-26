@@ -2,13 +2,10 @@
 Python script to merge all file in  folder with .md
 and merge them in a target file
 """
-
+from os import listdir
 
 OUTPUT = 'README.md'
 MD_FOLDER = 'docs'
-
-
-from os import listdir
 
 
 target_file = open(OUTPUT, 'w')
