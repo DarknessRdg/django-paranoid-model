@@ -12,7 +12,7 @@ Django abstract model with paranoid behavior, therefore when an instance is dele
 
 Sometimes you might want to keep all datas saved on your database and when user wants do delete, it is just hidden form user.
 
-All documentation is in the `docs` directory and online at [HERE !!](https://darknessrdg.github.io/django-paranoid-model/). If you're new here, we recomend you to checkout the documentation first :wink: .
+All documentation are in the `mkdocs/docs` directory and online at [HERE !!](https://darknessrdg.github.io/django-paranoid-model/). If you're new here, we recomend you to checkout the documentation first :wink: .
 
 ## Quick start
 
