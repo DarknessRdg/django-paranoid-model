@@ -3,8 +3,7 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/5b00ace127fb409fb2eb6e5468066d2f)](https://www.codacy.com/manual/DarknessRdg/django-paranoid-model?utm_source=github.com&utm_medium=referral&utm_content=DarknessRdg/django-paranoid-model&utm_campaign=Badge_Coverage)
 [![license](https://img.shields.io/github/license/DarknessRdg/django-paranoid-model.svg)](LICENSE.md)
 
-
-**Read the docs: https://darknessrdg.github.io/django-paranoid-model/**
+**Read the docs: <https://darknessrdg.github.io/django-paranoid-model/>**
 
 # django-paranoid-model
 
