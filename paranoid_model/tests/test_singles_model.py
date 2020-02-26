@@ -152,7 +152,7 @@ class SingleModelTest(TestCase):
 
         filter_with_deleted = Person.objects.filter(with_deleted=True, name__icontains='.')
         self.assertTrue(any_list(
-            filter_with_deleted, 
+            filter_with_deleted,
             lambda x: x.is_soft_deleted))
 
         self.assertTrue(any_list(
@@ -249,7 +249,7 @@ class SingleModelTest(TestCase):
 
         deleted = Person.objects.deleted_only()
         self.assertEquals(deleted.count(), delete)
-        
+
         deleted = Person.objects.all(with_deleted=True).deleted_only()
         self.assertEquals(deleted.count(), delete)
 

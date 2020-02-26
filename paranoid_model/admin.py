@@ -104,7 +104,7 @@ class ParanoidAdmin(admin.ModelAdmin):
             super().log_addition(request, obj, report)
         
         return _return
-    
+
     def restore_selected(self, request, queryset):
         """
         Action method to restore every instance selected

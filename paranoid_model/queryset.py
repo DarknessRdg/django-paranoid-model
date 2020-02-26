@@ -95,13 +95,13 @@ class ParanoidQuerySet(models.query.QuerySet):
         ``with_deleted`` has a default True because some Django's features call directly
         this method, like a ManyToMant field with related name, and in that case we want
         to have the default behavior and not be on Django's way. So we assume that 
-        every paranoid method that calls this filter() will pass a with_deleted and so 
+        every paranoid method that calls this filter() will pass a with_deleted and so
         work as user expects.
 
         It is also assumed that a ParanoidQueryset[] has already filtered the instances
         soft deleted according to the param whith_delted and the nested filter() wont need
-        to check again, and filter without deleted, like ``objects.filter().filter().filter()``. 
-        Onlty the firts filter will need to have ``with_deleted`` param, like: 
+        to check again, and filter without deleted, like ``objects.filter().filter().filter()``.
+        Onlty the firts filter will need to have ``with_deleted`` param, like:
         ``objects.filter(with_deleted=False).filter().filter()``
 
         Args:
@@ -147,7 +147,7 @@ class ParanoidQuerySet(models.query.QuerySet):
             return cont
         else:
             return len(super(ParanoidQuerySet, self).delete())
-    
+
     def restore(self):
         """
         Restore instances from current QuerySet
