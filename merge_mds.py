@@ -9,7 +9,6 @@ MD_FOLDER = 'docs'
 
 
 from os import listdir
-from os.path import isfile, join
 
 
 target_file = open(OUTPUT, 'w')

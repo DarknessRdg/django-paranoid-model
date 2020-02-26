@@ -14,7 +14,7 @@ class RelatedModelTest(TestCase):
 
     def test_create(self):
         """Test create a model with OneToOneField"""
-        car = Car.objects.get()
+        Car.objects.get()
         person = Person.objects.get()
 
         self.assertTrue(Car.objects.filter(owner=person).exists())

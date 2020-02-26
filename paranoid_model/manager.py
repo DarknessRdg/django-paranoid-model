@@ -3,7 +3,7 @@ File with Manager used on Paranoid Model
 """
 
 
-from django.db import models, router
+from django.db import models
 from paranoid_model.queryset import ParanoidQuerySet
 
 
