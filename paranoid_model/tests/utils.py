@@ -1,9 +1,9 @@
-from faker import Faker
-from paranoid_model.tests.models import Person, Phone, Address
-
 """
 File wiht utils functions
 """
+
+from faker import Faker
+from paranoid_model.tests.models import Person, Phone, Address
 
 
 fake = Faker('en_US')
@@ -79,6 +79,7 @@ def get_phone_instance(owner):
         Phone()
     """
     return Phone(phone=fake.phone_number(), owner=owner)
+
 
 def get_address_instance(owner):
     """
