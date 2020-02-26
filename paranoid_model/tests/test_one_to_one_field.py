@@ -30,7 +30,7 @@ class RelatedModelTest(TestCase):
 
         self.assertRaises(Car.SoftDeleted, 
                           lambda: Car.objects.get())
-                    
+
         car.delete(hard_delete=True)
         self.assertFalse(Car.objects.all(with_deleted=True).exists())
 

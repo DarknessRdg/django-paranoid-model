@@ -151,7 +151,6 @@ class ParanoidQuerySet(models.query.QuerySet):
     def restore(self):
         """
         Restore instances from current QuerySet
-        
         Returns:
             int(): amount restored
         """

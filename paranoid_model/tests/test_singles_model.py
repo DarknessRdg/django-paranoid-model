@@ -38,11 +38,11 @@ class SingleModelTest(TestCase):
         self.assertEquals(person.created_at.replace(microsecond=0),
                           person.updated_at.replace(microsecond=0))
         # Replace microseds possibles machine dellays don't interfere
-        
+
         seconds = 2
         time.sleep(seconds)  # wait seconds before save again so time should be diferents
         person.save()
-        
+
         self.assertNotEquals(person.created_at, person.updated_at)
 
     def test_soft_delete(self):
@@ -53,12 +53,12 @@ class SingleModelTest(TestCase):
         person.delete()
 
         self.assertIsNotNone(person.deleted_at)
-    
+
     def test_restore(self):
         """Test restore in a single object"""
         person = get_person_instance()
         person.save()
-        
+
         self.assertFalse(person.is_soft_deleted)
 
         person.delete()
@@ -116,11 +116,11 @@ class SingleModelTest(TestCase):
 
         all_with_deleted = Person.objects.all(with_deleted=True)
         self.assertTrue(any_list(
-            all_with_deleted, 
+            all_with_deleted,
             lambda x: x.is_soft_deleted))
-        
+
         self.assertTrue(any_list(
-            all_with_deleted, 
+            all_with_deleted,
             lambda x: not x.is_soft_deleted))
 
     def test_filter(self):
@@ -131,12 +131,12 @@ class SingleModelTest(TestCase):
 
         filter_without_param = Person.objects.filter(name__icontains='.')
         self.assertTrue(all_list(
-            filter_without_param, 
+            filter_without_param,
             lambda x: not x.is_soft_deleted))
-        
+
         filter_from_filter = filter_without_param.filter(name__icontains='.')
         self.assertTrue(all_list(
-            filter_from_filter, 
+            filter_from_filter,
             lambda x: not x.is_soft_deleted))
 
     def test_filter_with_deleted_param(self):
@@ -147,16 +147,16 @@ class SingleModelTest(TestCase):
 
         filter_without_deleted = Person.objects.filter(with_deleted=False, name__icontains='.')
         self.assertTrue(all_list(
-            filter_without_deleted, 
+            filter_without_deleted,
             lambda x: not x.is_soft_deleted))
 
         filter_with_deleted = Person.objects.filter(with_deleted=True, name__icontains='.')
         self.assertTrue(any_list(
             filter_with_deleted, 
             lambda x: x.is_soft_deleted))
-        
+
         self.assertTrue(any_list(
-            filter_with_deleted, 
+            filter_with_deleted,
             lambda x: not x.is_soft_deleted))
 
     def test_get(self):
@@ -170,16 +170,16 @@ class SingleModelTest(TestCase):
         self.assertNotRaises(lambda: Person.objects.get(name=name))
 
         self.assertRaises(
-            Person.DoesNotExist, 
+            Person.DoesNotExist,
             lambda: Person.objects.get(name=name+'^'))
-        
+
         person.delete()
         self.assertRaises(
-            Person.DoesNotExist, 
+            Person.DoesNotExist,
             lambda: Person.objects.get(name=name+'^'))
-        
+
         self.assertRaises(
-            Person.SoftDeleted, 
+            Person.SoftDeleted,
             lambda: Person.objects.get(name=name))
     
     def test_filter_and_get(self):
@@ -195,17 +195,17 @@ class SingleModelTest(TestCase):
         self.assertNotRaises(lambda: query.get(name=name))
 
         self.assertRaises(
-            Person.DoesNotExist, 
+            Person.DoesNotExist,
             lambda: query.get(name=name+'^'))
 
         person.delete()
         self.assertRaises(
-            Person.DoesNotExist, 
+            Person.DoesNotExist,
             lambda: query.get(name=name))
 
         query = Person.objects.filter(name=name, with_deleted=True)
         self.assertRaises(
-            Person.SoftDeleted, 
+            Person.SoftDeleted,
             lambda: query.get(name=name))
 
     def test_get_deleted(self):
@@ -213,10 +213,10 @@ class SingleModelTest(TestCase):
         
         person = get_person_instance()
         person.save()
-        name = person.name 
-        
+        name = person.name
+
         self.assertRaises(
-            Person.IsNotSoftDeleted, 
+            Person.IsNotSoftDeleted,
             lambda: Person.objects.get_deleted(name=name))
         
         person.delete()
