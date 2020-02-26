@@ -28,8 +28,7 @@ class RelatedModelTest(TestCase):
         self.assertFalse(Car.objects.all().exists())
         self.assertTrue(Car.objects.filter(with_deleted=True).exists())
 
-        self.assertRaises(Car.SoftDeleted,
-                          lambda: Car.objects.get())
+        self.assertRaises(Car.SoftDeleted, Car.objects.get)
 
         car.delete(hard_delete=True)
         self.assertFalse(Car.objects.all(with_deleted=True).exists())

@@ -29,12 +29,12 @@ class SingleModelTest(TestCase):
         self.assertIsNotNone(person.created_at)
         self.assertIsNotNone(person.updated_at)
         self.assertIsNone(person.deleted_at)
-    
+
     def test_created_at_and_updated_at(self):
         """Test fields created_at and updated_ad"""
         person = get_person_instance()
         person.save()
-        
+
         self.assertEquals(person.created_at.replace(microsecond=0),
                           person.updated_at.replace(microsecond=0))
         # Replace microseds possibles machine dellays don't interfere
@@ -181,7 +181,7 @@ class SingleModelTest(TestCase):
         self.assertRaises(
             Person.SoftDeleted,
             lambda: Person.objects.get(name=name))
-    
+
     def test_filter_and_get(self):
         """Test .get() after a .filter() query"""
 
@@ -210,7 +210,7 @@ class SingleModelTest(TestCase):
 
     def test_get_deleted(self):
         """Test get on deleted item"""
-        
+
         person = get_person_instance()
         person.save()
         name = person.name
@@ -218,7 +218,7 @@ class SingleModelTest(TestCase):
         self.assertRaises(
             Person.IsNotSoftDeleted,
             lambda: Person.objects.get_deleted(name=name))
-        
+
         person.delete()
         self.assertNotRaises(lambda: Person.objects.get_deleted(name=name))
 
@@ -231,19 +231,19 @@ class SingleModelTest(TestCase):
 
         self.assertTrue(person.is_soft_deleted)
         self.assertFalse(Person.objects.get_or_restore(name=person.name).is_soft_deleted)
-        
+
         self.assertRaises(
             Person.DoesNotExist,
             lambda: Person.objects.get_or_restore(name=person.name+'^'))
-            
+
         get_person_instance().save()
         self.assertRaises(
             Person.MultipleObjectsReturned,
             lambda: Person.objects.get())
-    
+
     def test_filter_deleted_only(self):
         """Test filter deleted_only"""
-        
+
         save, delete = 100, 200
         create_list_of_person(save, delete)
 

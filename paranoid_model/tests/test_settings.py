@@ -1,5 +1,3 @@
-import os
-
 SECRET_KEY = 'fake-key'
 
 # SECURITY WARNING: don't run with debug turned on in production!

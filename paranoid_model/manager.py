@@ -27,7 +27,7 @@ class ParanoidManager(models.Manager):
             with_deleted = kwargs['with_deleted']
         except KeyError:
             with_deleted = False
-        
+
         try:
             # When Manager has a instace, is need to check if
             # the isnstance has been soft delete. Because in case
@@ -39,14 +39,14 @@ class ParanoidManager(models.Manager):
             pass
         qs = self.get_queryset()
         return qs.all(with_deleted=with_deleted)
-    
+
     def filter(self, with_deleted=False, *args, **kwargs):
         """
         Intercept firts method ``objects.filter()``.
         This is because a querry from related_name doesn't call this
         method, in that case it can be treated on queryset.filter and know
         when is a related_name query or an objects query.
-        
+
         Args:
             with_deleted: bool to check if filter soft deleted or not. Default {False}
         Returns:
@@ -54,7 +54,7 @@ class ParanoidManager(models.Manager):
         """
         qs = self.get_queryset()
         return qs.filter(with_deleted=with_deleted, *args, **kwargs)
-    
+
     def deleted_only(self):
         """
         Method to filter only deleted instances

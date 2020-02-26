@@ -12,7 +12,7 @@ class ParanoidAdminFilter(admin.SimpleListFilter):
     title = _('soft deleted')
     parameter_name = 'deleted_at'
 
-    def lookups(self, request, mode_admin):
+    def lookups(self, request, model_admin):
         """
         Method with (value, option) for filter form
         on admin view
@@ -32,12 +32,12 @@ class ParanoidAdminFilter(admin.SimpleListFilter):
         with_deleted = False  # exclude deleted if not querrying all
 
         value = self.value()
-        
+
         if value is None or value == 'all':
             with_deleted = True
         elif value == 'soft':
             return queryset.deleted_only()
-        
+
         return queryset.all(with_deleted=with_deleted)
 
 
@@ -52,7 +52,6 @@ class ParanoidAdmin(admin.ModelAdmin):
     list_display = ('pk', '__str__', 'created_at', 'updated_at', 'is_not_deleted')
     list_display_links = ('pk', '__str__',)
     list_filter = (ParanoidAdminFilter,)
-    
     actions = ['restore_selected', 'permanently_delete']
 
     def is_not_deleted(self, obj):
@@ -64,7 +63,7 @@ class ParanoidAdmin(admin.ModelAdmin):
 
     def response_change(self, request, obj):
         """
-        Intecept default submit method on change_form view to performe
+        Intercept default submit method on change_form view to perform
         custom options
         Args:
             request
@@ -79,30 +78,30 @@ class ParanoidAdmin(admin.ModelAdmin):
             messages.add_message(request, level, message)
         else:
             return super().response_change(request, obj)
-        
+
         super().log_addition(request, obj, log_message)
         return HttpResponseRedirect('.')
-    
+
     def delete_view(self, request, object_id, extra_context=None):
         """
         Override default delete_view method to add 'Soft deleted'
         to log history
         """
-        
+
         _return = super().delete_view(request, object_id, extra_context=None)
         if request.POST:
             try:
                 obj = self.model.objects.get(pk=object_id)
             except SoftDeleted:
                 obj = self.model.objects.get_deleted(pk=object_id)
-            
+
             hard_delete = 'hard_delete' in request.GET.keys()
             obj.delete(hard_delete=hard_delete)
 
             report = 'Permanently deleted.' if hard_delete else 'Soft deleted.'
 
             super().log_addition(request, obj, report)
-        
+
         return _return
 
     def restore_selected(self, request, queryset):
