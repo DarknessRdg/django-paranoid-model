@@ -43,17 +43,17 @@ class RelatedModelTest(TestCase):
         phone1 = person.phones.get_deleted(owner=person)
         
         self.assertTrue(person.is_soft_deleted and phone1.is_soft_deleted)
-    
+
     def test_if_delete_affects_other_querrie(self):
         """Test if all other querries are updated when delete an instance"""
         person = get_person_instance()
         person.save()
         for i in range(3):
             get_phone_instance(person).save()
-        
+
         all_phones = person.phones.all()
         self.assertEquals(all_phones.count(), 3)
-        
+
         person.delete()
         self.assertEquals(all_phones.count(), 0)
 
@@ -64,11 +64,10 @@ class RelatedModelTest(TestCase):
 
         all_phones = person.phones.all(with_deleted=True)
         self.assertEquals(all_phones.count(), 3)
-        
+
         person.delete()
         self.assertEquals(all_phones.count(), 3)
 
-    
     def test_delete_cascade_with_many_objects(self):
         """Test delete cascade with many objects"""
         person = get_person_instance()
@@ -77,7 +76,7 @@ class RelatedModelTest(TestCase):
         for counter in range(20):
             get_phone_instance(person).save()
             get_address_instance(person).save()
-        
+
         all_phones = person.phones.all()
         self.assertEquals(all_phones.count(), 20)
 
@@ -101,7 +100,7 @@ class RelatedModelTest(TestCase):
         for counter in range(20):
             get_phone_instance(person).save()
             get_address_instance(person).save()
-        
+
         person.delete()
         self.assertEquals(person.phones.all(with_deleted=False).count(), 0)
         self.assertEquals(person.addresses.all(with_deleted=False).count(), 0)
@@ -124,7 +123,7 @@ class RelatedModelTest(TestCase):
 
         person_all = Person.objects.all()
         self.assertEquals(person_all.count(), amount)
-        
+
         for person in person_all:
             self.assertFalse(person.is_soft_deleted)
             self.assertEquals(person.phones.all().count(), amount_phones)
@@ -133,7 +132,7 @@ class RelatedModelTest(TestCase):
         """Test related name query .all()"""
         person = get_person_instance()
         person.save()
-        
+
         phone1 = get_phone_instance(person)
         phone1.save()
         phone2 = get_phone_instance(person)
@@ -144,28 +143,28 @@ class RelatedModelTest(TestCase):
         phone1.delete()
         self.assertEquals(person.phones.all().count(), 1)
         self.assertEquals(person.phones.all(with_deleted=True).count(), 2)
-        
+
         phone1.restore()
         person.delete()
         self.assertEquals(person.phones.all().count(), 2)
         self.assertEquals(person.phones.all(with_deleted=True).count(), 2)
         self.assertEquals(person.phones.all(with_deleted=False).count(), 0)
-    
+
     def test_related_name_queries_filter(self):
         """Test related name query .filter()"""
         person = get_person_instance()
         person.save()
-        
+
         phone1 = get_phone_instance(person)
         phone1.save()
         phone2 = get_phone_instance(person)
         phone2.save()
-        
+
         phone1.delete()
         self.assertEquals(person.phones.filter(owner=person).count(), 1)
         self.assertEquals(person.phones.filter(owner=person, with_deleted=True).count(), 2)
         self.assertEquals(person.phones.filter(owner=person, with_deleted=False).count(), 1)
-    
+
     def test_get_on_related(self):
         """Test .get() wiht related_name query"""
 
@@ -177,16 +176,16 @@ class RelatedModelTest(TestCase):
 
         self.assertNotRaises(lambda: person.phones.get(phone=phone1.phone))
         self.assertRaises(
-            Phone.DoesNotExist, 
+            Phone.DoesNotExist,
             lambda: person.phones.get(phone=phone1.phone+'0'))
-        
+
         phone1.delete()
         self.assertRaises(
             Phone.SoftDeleted, 
             lambda: person.phones.get(phone=phone1.phone))
-        
+
         self.assertRaises(
-            Phone.DoesNotExist, 
+            Phone.DoesNotExist,
             lambda: person.phones.get(phone=phone1.phone+'0'))
 
     def test_get_deleted(self):
@@ -211,7 +210,7 @@ class RelatedModelTest(TestCase):
         self.assertRaises(
             Phone.MultipleObjectsReturned,
             lambda: person.phones.get(owner=person))
-        
+
     def test_get_or_restore(self):
         """Test get_or_restore() related_name query"""
 
@@ -235,7 +234,7 @@ class RelatedModelTest(TestCase):
 
     def test_filter_deleted_only(self):
         """Test .deleted_only() with related name queries"""
-        
+
         person = get_person_instance()
         person.save()
 
@@ -245,7 +244,7 @@ class RelatedModelTest(TestCase):
 
             if counter % 2 == 0:
                 phone.delete()
-        
+
         deleted = person.phones.deleted_only()
         self.assertEquals(deleted.count(), 50)
 

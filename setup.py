@@ -11,13 +11,13 @@ setuptools.setup(
 
     author='Luan Rodrigues',
     author_email='luanrodriguesbusiness@hotmail.com',
-    
+
     description='Django abstract model with paranoid behavior',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    
+
     packages=setuptools.find_packages(),
-    
+
     classifiers=[
         'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',

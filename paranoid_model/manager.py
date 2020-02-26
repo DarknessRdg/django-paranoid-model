@@ -3,7 +3,7 @@ File with Manager used on Paranoid Model
 """
 
 
-from django.db import models, router
+from django.db import models
 from paranoid_model.queryset import ParanoidQuerySet
 
 
@@ -31,7 +31,7 @@ class ParanoidManager(models.Manager):
         try:
             # When Manager has a instace, is need to check if
             # the isnstance has been soft delete. Because in case
-            # that instace has been soft delete, the query must be 
+            # that instace has been soft delete, the query must be
             # with deleted and if user has not passad a with_deleted param
             if self.instance.is_soft_deleted and 'with_deleted' not in kwargs.keys():
                 with_deleted = True
@@ -80,7 +80,7 @@ class ParanoidManager(models.Manager):
         """
         
         return self.get_queryset().get_deleted(*arg, **kwargs)
-    
+
     def get_or_restore(self, *args, **kwargs):
         """
         Method to get a instance, and if has been soft deleted it will be restored

@@ -11,7 +11,7 @@ class ParanoidAdminFilter(admin.SimpleListFilter):
     """Class to handle filter on site"""
     title = _('soft deleted')
     parameter_name = 'deleted_at'
-    
+
     def lookups(self, request, mode_admin):
         """
         Method with (value, option) for filter form
@@ -126,7 +126,7 @@ class ParanoidAdmin(admin.ModelAdmin):
         queryset.delete(hard_delete=self.hard_delete)
         self.hard_delete = False
     hard_delete = False  # boolean for 'permanently delete' action
-    # use django delete confirmation is pretty hard, so instaead of create 
+    # use django delete confirmation is pretty hard, so instaead of create
     # our own, it is easier to have a boolean variable to check if permanently or not.
     # Django's 'delete_selected' uses delete_queryset() to delete.
 
@@ -146,4 +146,3 @@ class ParanoidAdmin(admin.ModelAdmin):
             return None
         except SoftDeleted:
             return queryset.get_deleted(**{field.name: object_id})
-
