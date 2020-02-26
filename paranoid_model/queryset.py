@@ -93,7 +93,7 @@ class ParanoidQuerySet(models.query.QuerySet):
 
         ``with_deleted`` has a default True because some Django's features call directly
         this method, like a ManyToMant field with related name, and in that case we want
-        to have the default behavior and not be on Django's way. So we assume that 
+        to have the default behavior and not be on Django's way. So we assume that
         every paranoid method that calls this filter() will pass a with_deleted and so
         work as user expects.
 

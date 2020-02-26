@@ -224,9 +224,7 @@ class RelatedModelTest(TestCase):
         self.assertFalse(person.phones.get_or_restore(phone=phone1.phone).is_soft_deleted)
 
         get_phone_instance(person).save()
-        self.assertRaises(
-            Phone.MultipleObjectsReturned,
-            lambda: person.phones.get_or_restore())
+        self.assertRaises(Phone.MultipleObjectsReturned, person.phones.get_or_restore)
 
         self.assertRaises(
             Phone.DoesNotExist,
