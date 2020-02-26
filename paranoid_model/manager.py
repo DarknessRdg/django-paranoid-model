@@ -43,7 +43,7 @@ class ParanoidManager(models.Manager):
     def filter(self, with_deleted=False, *args, **kwargs):
         """
         Intercept firts method ``objects.filter()``.
-        This is because a querry from related_name doesn't call this 
+        This is because a querry from related_name doesn't call this
         method, in that case it can be treated on queryset.filter and know
         when is a related_name query or an objects query.
         
@@ -78,7 +78,6 @@ class ParanoidManager(models.Manager):
             paranoid_model.IsNotSoftDeleted: object has not been soft deleted yet
             model.MultipleObjectsReturned: if filtered more than 1 instance
         """
-        
         return self.get_queryset().get_deleted(*arg, **kwargs)
 
     def get_or_restore(self, *args, **kwargs):

@@ -18,7 +18,7 @@ class RelatedModelTest(TestCase):
         person = Person.objects.get()
 
         self.assertTrue(Car.objects.filter(owner=person).exists())
-    
+
     def test_delete(self):
         """Test dele model with OneToOneField"""
         person = Person.objects.get()
@@ -28,7 +28,7 @@ class RelatedModelTest(TestCase):
         self.assertFalse(Car.objects.all().exists())
         self.assertTrue(Car.objects.filter(with_deleted=True).exists())
 
-        self.assertRaises(Car.SoftDeleted, 
+        self.assertRaises(Car.SoftDeleted,
                           lambda: Car.objects.get())
 
         car.delete(hard_delete=True)

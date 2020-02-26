@@ -181,7 +181,7 @@ class RelatedModelTest(TestCase):
 
         phone1.delete()
         self.assertRaises(
-            Phone.SoftDeleted, 
+            Phone.SoftDeleted,
             lambda: person.phones.get(phone=phone1.phone))
 
         self.assertRaises(
@@ -227,7 +227,7 @@ class RelatedModelTest(TestCase):
         self.assertRaises(
             Phone.MultipleObjectsReturned,
             lambda: person.phones.get_or_restore())
-        
+
         self.assertRaises(
             Phone.DoesNotExist,
             lambda: person.phones.get_or_restore(phone='a'))
