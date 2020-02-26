@@ -12,7 +12,7 @@ class ParanoidAdminFilter(admin.SimpleListFilter):
     title = _('soft deleted')
     parameter_name = 'deleted_at'
 
-    def lookups(self, request, mode_admin):
+    def lookups(self, request, model_admin):
         """
         Method with (value, option) for filter form
         on admin view

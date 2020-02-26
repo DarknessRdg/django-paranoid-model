@@ -86,7 +86,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         """
         return self.filter(with_deleted=with_deleted)
 
-    def filter(self, with_deleted=True, *args, **kwargs):
+    def filter(self, *args, **kwargs):
         """
         Override default behavior of Django's filter() to filter not sotf deleted or include
         instaces that has been soft_deleted.
@@ -104,11 +104,12 @@ class ParanoidQuerySet(models.query.QuerySet):
         ``objects.filter(with_deleted=False).filter().filter()``
 
         Args:
-            with_deleted: bool to check if filter soft deleted or not. Default {True}.
+            **kwargs: extra options:
+                with_deleted: bool to check if filter soft deleted or not. Default {True}.
         Returns:
             ParanoidQuerySet[]
         """
-
+        with_deleted = kwargs.pop('with_deleted', True)  # default True
         for key in kwargs.keys():
             if key.startswith('deleted_at'):
                 kwargs.pop(key)
