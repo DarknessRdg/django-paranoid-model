@@ -237,9 +237,7 @@ class SingleModelTest(TestCase):
             lambda: Person.objects.get_or_restore(name=person.name+'^'))
 
         get_person_instance().save()
-        self.assertRaises(
-            Person.MultipleObjectsReturned,
-            lambda: Person.objects.get())
+        self.assertRaises(Person.MultipleObjectsReturned, Person.objects.get)
 
     def test_filter_deleted_only(self):
         """Test filter deleted_only"""
