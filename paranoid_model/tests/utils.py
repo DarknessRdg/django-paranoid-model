@@ -3,7 +3,7 @@ File wiht utils functions
 """
 
 from faker import Faker
-from paranoid_model.tests.models import Person, Phone, Address
+from paranoid_model.tests.models import Person, Phone, Address, Clothes
 
 
 fake = Faker('en_US')
@@ -89,3 +89,7 @@ def get_address_instance(owner):
         Address()
     """
     return Address(street=fake.address(), owner=owner)
+
+
+def get_clothe_instance(person):
+    return Clothes(description=fake.word(), person=person)
