@@ -103,7 +103,7 @@ class RelatedModelTest(TestCase):
         person.save()
 
         get_clothe_instance(person).save()
-        
+
         person.delete()
         self.assertNotRaises(Clothes.objects.get)
 
