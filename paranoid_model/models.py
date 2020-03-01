@@ -56,7 +56,8 @@ class Paranoid(models.Model):
             self.save()
 
             for instance in self._related_objects():
-                instance.delete()
+                if isinstance(instance, Paranoid):
+                    instance.delete()
         else:
             super(Paranoid, self).delete(using=using, keep_parents=keep_parents)
 

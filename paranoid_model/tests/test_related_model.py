@@ -1,6 +1,8 @@
 from django.test import TestCase
-from paranoid_model.tests.models import Person, Phone
-from paranoid_model.tests.utils import get_person_instance, get_phone_instance, get_address_instance
+from paranoid_model.tests.models import Person, Phone, Clothes
+from paranoid_model.tests.utils import (
+    get_person_instance, get_phone_instance, get_address_instance, get_clothe_instance
+)
 
 
 class RelatedModelTest(TestCase):
@@ -91,6 +93,19 @@ class RelatedModelTest(TestCase):
         all_address_without_deleted = all_address.all()
         self.assertEquals(all_address.count(), 20)
         self.assertEquals(all_address_without_deleted.count(), 0)
+
+    def test_delete_cascade_with_objects_not_paranoid(self):
+        """
+        Test if when delete a paranoid model, other models
+        not paranoid are not deleted
+        """
+        person = get_person_instance()
+        person.save()
+
+        get_clothe_instance(person).save()
+
+        person.delete()
+        self.assertNotRaises(Clothes.objects.get)
 
     def test_restore_cascade(self):
         """Test restore cascade"""
