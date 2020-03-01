@@ -45,3 +45,17 @@ class Address(paranoid_model.Paranoid):
 
 class Car(paranoid_model.Paranoid):
     owner = models.OneToOneField(Person, on_delete=models.CASCADE)
+
+
+class Clothes(models.Model):
+    """
+    Person clothes not paranoid model
+    Attributes:
+        street: CharField
+        owner: ForeignKey to Person
+        created_at: DateTimeField
+        updated_at: DateTimeField
+        deleted_at: DateTimeField
+    """
+    description = models.CharField(max_length=255)
+    person = models.ForeignKey(Person, on_delete=models.CASCADE, related_name='my_clothes')
