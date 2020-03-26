@@ -7,6 +7,7 @@ from paranoid_model.tests.utils import (
 
 class RelatedModelTest(TestCase):
     """Test model with relatioships ManyToMany, ForeignKey, OneToOne"""
+    multi_db = True
 
     def setUp(self):
         pass
@@ -263,3 +264,17 @@ class RelatedModelTest(TestCase):
 
         deleted_zero = person.phones.all().deleted_only()
         self.assertEquals(deleted_zero.count(), 0)
+
+    def test_delete_using(self):
+        using = 'db2'
+
+        person = get_person_instance()
+        person.save(using=using)
+
+        phone = get_phone_instance(person)
+        phone.save(using=using)
+
+        person.delete(using=using)
+
+        self.assertEqual(Person.objects.using(using).all(with_deleted=True).count(), 1)
+        self.assertEqual(Phone.objects.using(using).all(with_deleted=True).count(), 1)

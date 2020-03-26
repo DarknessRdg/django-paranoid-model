@@ -6,6 +6,7 @@ import time
 
 class SingleModelTest(TestCase):
     """Test paranoid model behavion on a sigle model"""
+    multi_db = True
 
     def setUp(self):
         pass
@@ -253,3 +254,18 @@ class SingleModelTest(TestCase):
 
         deleted_zero = Person.objects.all().deleted_only()
         self.assertEquals(deleted_zero.count(), 0)
+
+    def test_delete_using(self):
+        using = 'db2'
+        person = get_person_instance()
+        person.save(using=using)
+        person.delete(using=using)
+        self.assertTrue(person.is_soft_deleted)
+
+    def test_save_using(self):
+        using = 'db2'
+        person = get_person_instance()
+        person.save(using=using)
+
+        self.assertIsNotNone(person.id)
+        self.assertNotRaises(Person.objects.using(using).get)

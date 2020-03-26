@@ -71,8 +71,9 @@ class ParanoidQuerySet(models.query.QuerySet):
         """
 
         objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
+        using = kwargs.pop('using', None)
         if objeto.is_soft_deleted:
-            objeto.restore()
+            objeto.restore(using)
         return objeto
 
     def all(self, with_deleted=False):
@@ -128,7 +129,7 @@ class ParanoidQuerySet(models.query.QuerySet):
             kwargs['deleted_at__isnull'] = True
         return super(ParanoidQuerySet, self).filter(*args, **kwargs)
 
-    def delete(self, hard_delete=False):
+    def delete(self, hard_delete=False, using=None):
         """
         Delet instances from current QuerySet
         Args:
@@ -140,15 +141,15 @@ class ParanoidQuerySet(models.query.QuerySet):
         if not hard_delete:
             cont = 0
             for instance in self:
-                instance.delete()
+                instance.delete(using=using)
                 cont += 1
             # Clear the result cache, in case this QuerySet gets reused.
             self._result_cache = None
             return cont
         else:
-            return len(super(ParanoidQuerySet, self).delete())
+            return len(super(ParanoidQuerySet, self).delete(using=using))
 
-    def restore(self):
+    def restore(self, using=None):
         """
         Restore instances from current QuerySet
         Returns:
@@ -158,7 +159,7 @@ class ParanoidQuerySet(models.query.QuerySet):
         cont = 0
         for instance in self:
             if instance.is_soft_deleted:
-                instance.restore()
+                instance.restore(using)
                 cont += 1
         # Clear the result cache, in case this QuerySet gets reused.
         self._result_cache = None

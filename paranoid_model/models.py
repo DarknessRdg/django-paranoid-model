@@ -53,25 +53,25 @@ class Paranoid(models.Model):
         """
         if not hard_delete:
             self.deleted_at = timezone.now()
-            self.save()
+            self.save(using=using)
 
             for instance in self._related_objects():
                 if isinstance(instance, Paranoid):
-                    instance.delete()
+                    instance.delete(using=using)
         else:
             super(Paranoid, self).delete(using=using, keep_parents=keep_parents)
 
-    def restore(self):
+    def restore(self, using=None):
         """
         Restore an instance once deleted and instance's related objects
         """
         self.deleted_at = None
-        self.save()
+        self.save(using=using)
 
         for related in self._related_objects():
             if 'deleted_at' in related.__dict__.keys():
                 related.deleted_at = None
-                related.save()
+                related.save(using=using)
 
     def _related_objects(self):
         """
