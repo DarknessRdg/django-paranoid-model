@@ -3,7 +3,7 @@ File with a based Paranoid model
 """
 
 
-from django.db import models, router
+from django.db import models
 from django.utils import timezone
 from django.contrib.admin.utils import NestedObjects
 from paranoid_model.exceptions import SoftDeleted, IsNotSoftDeleted
@@ -55,7 +55,7 @@ class Paranoid(models.Model):
             self.deleted_at = timezone.now()
             self.save(using=using)
 
-            for instance in self._related_objects():
+            for instance in self._related_objects(using):
                 if isinstance(instance, Paranoid):
                     instance.delete(using=using)
         else:
@@ -68,12 +68,12 @@ class Paranoid(models.Model):
         self.deleted_at = None
         self.save(using=using)
 
-        for related in self._related_objects():
+        for related in self._related_objects(using):
             if 'deleted_at' in related.__dict__.keys():
                 related.deleted_at = None
                 related.save(using=using)
 
-    def _related_objects(self):
+    def _related_objects(self, using):
         """
         Method to get all objects with foreign key the relation with self instance
         Args:
@@ -81,7 +81,10 @@ class Paranoid(models.Model):
         Returns:
             List(): all related objects
         """
-        collector = NestedObjects(using=router.db_for_write(self))
+        if not using:
+            using = 'default'
+
+        collector = NestedObjects(using=using)
         collector.collect([self])
 
         def parse_list(obj):
