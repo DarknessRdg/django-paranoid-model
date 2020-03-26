@@ -81,6 +81,9 @@ class Paranoid(models.Model):
         Returns:
             List(): all related objects
         """
+        if not using:
+            using = 'default'
+
         collector = NestedObjects(using=using)
         collector.collect([self])
 
