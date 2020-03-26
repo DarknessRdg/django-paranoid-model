@@ -1,0 +1,1 @@
+recursive-include paranoid_model/templates/admin/paranoid_model *.html
