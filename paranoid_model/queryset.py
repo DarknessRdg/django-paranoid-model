@@ -147,7 +147,7 @@ class ParanoidQuerySet(models.query.QuerySet):
             self._result_cache = None
             return cont
         else:
-            return len(super(ParanoidQuerySet, self).delete()
+            return super(ParanoidQuerySet, self).delete()
 
     def restore(self, using=None):
         """
