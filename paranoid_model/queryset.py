@@ -5,6 +5,7 @@ File with QuerySet used on Paranoid Model
 
 from django.db import models
 from paranoid_model.exceptions import SoftDeleted, IsNotSoftDeleted
+import paranoid_model.models
 
 
 class ParanoidQuerySet(models.query.QuerySet):
@@ -121,7 +122,7 @@ class ParanoidQuerySet(models.query.QuerySet):
             # with user's filter.
             # When Django filter a object soft deleted, with_deledt should
             # be True.
-            elif isinstance(kwargs[key], models.Model) and not with_deleted:
+            elif isinstance(kwargs[key], paranoid_model.models.Paranoid) and not with_deleted:
                 if kwargs[key].is_soft_deleted:
                     with_deleted = True
 
