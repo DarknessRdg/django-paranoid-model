@@ -1,5 +1,5 @@
 ﻿asgiref==3.2.3
-bleach==3.1.3
+bleach==3.1.4
 certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
