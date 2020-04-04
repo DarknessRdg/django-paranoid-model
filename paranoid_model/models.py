@@ -3,7 +3,7 @@ File with a based Paranoid model
 """
 
 
-from django.db import models
+from django.db import models, router
 from django.utils import timezone
 from django.contrib.admin.utils import NestedObjects
 from paranoid_model.exceptions import SoftDeleted, IsNotSoftDeleted
@@ -81,8 +81,7 @@ class Paranoid(models.Model):
         Returns:
             List(): all related objects
         """
-        if not using:
-            using = 'default'
+        using = using or router.db_for_write(self.__class__, instance=self)
 
         collector = NestedObjects(using=using)
         collector.collect([self])
