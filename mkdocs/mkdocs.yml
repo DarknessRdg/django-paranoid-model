@@ -27,20 +27,20 @@ theme:
   palette:
     primary: 'teal'
     accent: 'green'
-  logo:
-    icon: 'code'
+  icon:
+    logo: fontawesome/brands/github-alt
 
 
 # Customization
 extra:
   social:
-    - type: 'user'
+    - icon: fontawesome/solid/user
       link: 'https://darknessrdg.github.io/'
-    - type: 'github'
+    - icon: fontawesome/brands/github-alt
       link: 'https://github.com/DarknessRdg'
-    - type: 'instagram'
+    - icon: fontawesome/brands/instagram
       link: 'https://www.instagram.com/luan_26/'
-    - type: 'facebook'
+    - icon: fontawesome/brands/facebook
       link: 'https://www.facebook.com/luan.dasilva.925'
 
 # Extensions
