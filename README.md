@@ -2,6 +2,8 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/bd361ce3dc054deb83e8d1255cb1b895)](https://app.codacy.com/manual/DarknessRdg/django-paranoid-model?utm_source=github.com&utm_medium=referral&utm_content=DarknessRdg/django-paranoid-model&utm_campaign=Badge_Grade_Dashboard)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/5b00ace127fb409fb2eb6e5468066d2f)](https://www.codacy.com/manual/DarknessRdg/django-paranoid-model?utm_source=github.com&utm_medium=referral&utm_content=DarknessRdg/django-paranoid-model&utm_campaign=Badge_Coverage)
 [![license](https://img.shields.io/github/license/DarknessRdg/django-paranoid-model.svg)](LICENSE.md)
+[![Issue](https://img.shields.io/github/issues/darknessrdg/django-paranoid-model?color=0088ff)](LICENSE.md)
+[![Pull Requests](https://img.shields.io/github/issues-pr/darknessrdg/django-paranoid-model?color=0088ff)](LICENSE.md)
 
 **Read the docs: <https://darknessrdg.github.io/django-paranoid-model/>**
 
