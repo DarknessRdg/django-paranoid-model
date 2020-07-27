@@ -11,5 +11,6 @@ if __name__ == "__main__":
     django.setup()
     TestRunner = get_runner(settings)
     test_runner = TestRunner()
-    failures = test_runner.run_tests(["paranoid_model.tests"])
+    test_suite = sys.argv[1] if len(sys.argv) > 1 else 'paranoid_model.tests'
+    failures = test_runner.run_tests([test_suite])
     sys.exit(bool(failures))
