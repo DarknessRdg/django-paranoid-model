@@ -147,7 +147,7 @@ class RelatedModelTest(TestCase):
         """Test related name query .filter()"""
         person = baker.make(Person)
 
-        phone1, phone2 = baker.make(Phone, owner=person, _quantity=2)
+        phone1 = baker.make(Phone, owner=person, _quantity=2)[0]
 
         phone1.delete()
         self.assertEquals(person.phones.filter().count(), 1)
