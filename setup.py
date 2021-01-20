@@ -3,6 +3,22 @@ import setuptools
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
+requires = [
+    'Django>=2.0.1',
+]
+
+extras_require = {
+    'test': [
+        'Faker==2.0.3',
+        'model-bakery==1.1.1',
+        'ipdb==0.10.1',
+        'pytest==4.0.0',
+        'pytest-django==3.4.4',
+        'pytest-cov==2.8.1',
+    ],
+}
+
+
 setuptools.setup(
     name='django-paranoid-model',
     version='1.0.6',
@@ -25,10 +41,8 @@ setuptools.setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    install_requires=['Django'],
-    extra_requires={
-        'test': ['Faker']
-    },
+    install_requires=requires,
+    extras_require=extras_require,
     python_requires='>=3.4',
 
     project_urls={
