@@ -8,8 +8,8 @@ import time
 
 
 class SingleModelTest(TestCase):
-    """Test paranoid model behavion on a sigle model"""
-    multi_db = True
+    """Test paranoid model behavion on a single model"""
+    databases = '__all__'
 
     def assertNotRaises(self, function):
         """

@@ -7,7 +7,7 @@ from model_bakery import baker
 
 class RelatedModelTest(TestCase):
     """Test model with relationships ManyToMany, ForeignKey, OneToOne"""
-    multi_db = True
+    databases = '__all__'
 
     def assertNotRaises(self, function):
         """
