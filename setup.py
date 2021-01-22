@@ -9,7 +9,7 @@ requires = [
 
 extras_require = {
     'test': [
-        'Faker==2.0.3',
+        'Faker==5.0.1',
         'model-bakery==1.1.1',
         'ipdb==0.10.1',
         'pytest==6.2.1',
