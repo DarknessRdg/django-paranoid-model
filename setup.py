@@ -12,7 +12,7 @@ extras_require = {
         'Faker==5.0.1',
         'model-bakery==1.1.1',
         'ipdb==0.10.1',
-        'pytest==5.4.0',
+        'pytest==6.2.1',
         'pytest-django==4.1.0',
         'pytest-cov==2.11.1',
         'tox==3.21.2',
