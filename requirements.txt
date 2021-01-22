@@ -1,9 +1,0 @@
-asgiref==3.2.3
-Django==2.0.1
-Faker==2.0.3
-model-bakery==1.1.1
-python-dateutil==2.8.1
-pytz==2019.3
-six==1.13.0
-sqlparse==0.3.0
-text-unidecode==1.3

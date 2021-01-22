@@ -1,5 +1,5 @@
 <p align="center">
-    <a 
+    <a
         href="https://travis-ci.org/DarknessRdg/django-paranoid-model">
         <img
             src="https://travis-ci.org/DarknessRdg/django-paranoid-model.svg?branch=master"
@@ -7,7 +7,7 @@
     </a>
     <a href="https://app.codacy.com/manual/DarknessRdg/django-paranoid-model?utm_source=github.com&utm_medium=referral&utm_content=DarknessRdg/django-paranoid-model&utm_campaign=Badge_Grade_Dashboard">
         <img
-            src="https://api.codacy.com/project/badge/Grade/bd361ce3dc054deb83e8d1255cb1b895" 
+            src="https://api.codacy.com/project/badge/Grade/bd361ce3dc054deb83e8d1255cb1b895"
             alt="Code quality" />
     </a>
     <a href="https://www.codacy.com/manual/DarknessRdg/django-paranoid-model?utm_source=github.com&utm_medium=referral&utm_content=DarknessRdg/django-paranoid-model&utm_campaign=Badge_Coverage">
@@ -17,7 +17,7 @@
     </a>
     <a href="/LICENSE.md">
         <img
-            src="https://img.shields.io/github/license/DarknessRdg/django-paranoid-model.svg" 
+            src="https://img.shields.io/github/license/DarknessRdg/django-paranoid-model.svg"
             alt="License" />
     </a>
     <a href="https://github.com/DarknessRdg/django-paranoid-model/issues">
@@ -27,23 +27,23 @@
     </a>
     <a href="https://github.com/DarknessRdg/django-paranoid-model/pulls">
         <img
-            src="https://img.shields.io/github/issues-pr/darknessrdg/django-paranoid-model?color=0088ff" 
+            src="https://img.shields.io/github/issues-pr/darknessrdg/django-paranoid-model?color=0088ff"
             alt="Open pull requests" />
     </a>
 </p>
 
 <p align="center">
-    <a 
+    <a
         href="https://pypi.org/project/django-paranoid-model/"
         alt="PiPy downloads">
         <img src="https://img.shields.io/pypi/dm/django-paranoid-model?color=informational" />
     </a>
-    <a 
+    <a
         href="https://pypi.org/project/django-paranoid-model/"
         alt="PiPy version">
         <img src="https://img.shields.io/pypi/v/django-paranoid-model" />
     </a>
-    <a 
+    <a
         href="https://pypi.org/project/django-paranoid-model/"
         alt="PiPy status">
         <img src="https://img.shields.io/pypi/status/django-paranoid-model?color=important" />
@@ -78,3 +78,16 @@ INSTALLED_APPS = [
 ```
 
 Good job ! You're now ready to use it.
+
+
+Run tests
+---------
+```
+  pip install -e .[test]
+  pytest
+```
+or run Tox to test on multiple Django versions
+```
+  pip install tox
+  tox
+```

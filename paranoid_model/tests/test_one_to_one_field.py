@@ -31,4 +31,4 @@ class RelatedModelTest(TestCase):
         """Test if related object is being queried"""
         self.person.delete()
         self.assertFalse(Car.objects.all().exists())
-        self.assertEquals(Car.objects.get_deleted().owner, self.person)
+        self.assertEqual(Car.objects.get_deleted().owner, self.person)
