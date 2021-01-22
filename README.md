@@ -86,3 +86,8 @@ Run tests
   pip install -e .[test]
   pytest
 ```
+or run Tox to test on multiple Django versions
+```
+  pip install tox
+  tox
+```
