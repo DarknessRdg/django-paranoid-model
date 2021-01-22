@@ -3,6 +3,9 @@ import setuptools
 with open('README.md', 'r') as fh:
     long_description = fh.read()
 
+with open('version.txt') as version_file:
+    version = version_file.read().strip()
+
 requires = [
     'Django>=2.2.0',
 ]
@@ -22,7 +25,7 @@ extras_require = {
 
 setuptools.setup(
     name='django-paranoid-model',
-    version='1.0.6',
+    version=version,
     url='https://github.com/DarknessRdg/django-paranoid-model',
     keywords='django paranoid safedelete softdelete',
 
