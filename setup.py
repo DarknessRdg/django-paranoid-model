@@ -4,7 +4,7 @@ with open('README.md', 'r') as fh:
     long_description = fh.read()
 
 requires = [
-    'Django>=2.0.1',
+    'Django>=2.2.0',
 ]
 
 extras_require = {
@@ -15,6 +15,7 @@ extras_require = {
         'pytest==5.4.0',
         'pytest-django==4.1.0',
         'pytest-cov==2.11.1',
+        'tox==3.21.2',
     ],
 }
 
