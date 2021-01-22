@@ -22,7 +22,7 @@
     </a>
 </p>
 
-**Read the docs: <https://jeromelefeuvre.github.io/django-paranoid-model/>**
+<!-- **Read the docs: <https://jeromelefeuvre.github.io/django-paranoid-model/>** -->
 
 # django-paranoid-model
 
