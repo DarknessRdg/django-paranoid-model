@@ -136,7 +136,7 @@ class SingleModelTest(TestCase):
         baker.make(Person, _quantity=10, _fill_optional=['deleted_at'])
 
         filter_without_param = Person.objects.filter(Q(name='foo'))
-        self.assertEquals(filter_without_param.count(), 1)
+        self.assertEqual(filter_without_param.count(), 1)
         self.assertTrue(
             filter(lambda instance: instance.is_soft_deleted, filter_without_param)
         )
