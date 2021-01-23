@@ -7,7 +7,7 @@ with open('version.txt') as version_file:
     version = version_file.read().strip()
 
 requires = [
-    'Django>=2.2.0',
+    'Django>=1.11.0',
 ]
 
 extras_require = {
