@@ -11,6 +11,9 @@ class SingleModelTest(TestCase):
     """Test paranoid model behavion on a single model"""
     databases = '__all__'
 
+    def tearDown(self):
+        Person.objects.using('db2').all(with_deleted=True).delete(hard_delete=True)
+
     def assertNotRaises(self, function):
         """
         Method to check if a function does not raises an exception
