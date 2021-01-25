@@ -111,6 +111,11 @@ class ParanoidQuerySet(models.query.QuerySet):
         Returns:
             ParanoidQuerySet[]
         """
+        args_copy = args
+
+        if not isinstance(kwargs.get('with_deleted', True), bool):
+            args_copy += (kwargs['with_deleted'],)
+
         with_deleted = kwargs.pop('with_deleted', True)  # default True
         for key in kwargs.keys():
             if key.startswith('deleted_at'):
@@ -128,7 +133,7 @@ class ParanoidQuerySet(models.query.QuerySet):
 
         if not with_deleted:
             kwargs['deleted_at__isnull'] = True
-        return super(ParanoidQuerySet, self).filter(*args, **kwargs)
+        return super(ParanoidQuerySet, self).filter(*args_copy, **kwargs)
 
     def delete(self, hard_delete=False, using=None):
         """

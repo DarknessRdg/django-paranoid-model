@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.test import TestCase
 
 from paranoid_model.tests.models import Person
@@ -121,6 +122,21 @@ class SingleModelTest(TestCase):
         baker.make(Person, _quantity=10, _fill_optional=['deleted_at'])
 
         filter_without_param = Person.objects.filter()
+        self.assertTrue(
+            filter(lambda instance: instance.is_soft_deleted, filter_without_param)
+        )
+
+        filter_from_filter = filter_without_param.filter()
+        self.assertTrue(
+            filter(lambda instance: not instance.is_soft_deleted, filter_from_filter))
+
+    def test_filter_with_q_object_should_not_return_deleted_objects(self):
+        """Test query filter()"""
+        baker.make(Person, _quantity=1, name='foo')
+        baker.make(Person, _quantity=10, _fill_optional=['deleted_at'])
+
+        filter_without_param = Person.objects.filter(Q(name='foo'))
+        self.assertEquals(filter_without_param.count(), 1)
         self.assertTrue(
             filter(lambda instance: instance.is_soft_deleted, filter_without_param)
         )
