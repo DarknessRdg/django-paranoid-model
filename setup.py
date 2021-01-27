@@ -22,7 +22,7 @@ extras_require = {
 
 setuptools.setup(
     name='django-paranoid-model',
-    version='1.0.6',
+    version='1.0.7',
     url='https://github.com/DarknessRdg/django-paranoid-model',
     keywords='django paranoid safedelete softdelete',
 
