@@ -7,7 +7,7 @@ from model_bakery import baker
 
 class RelatedModelTest(TestCase):
     """Test model with relationships ManyToMany, ForeignKey, OneToOne"""
-    multi_db = True
+    databases = '__all__'
 
     def assertNotRaises(self, function):
         """
@@ -26,7 +26,7 @@ class RelatedModelTest(TestCase):
         person = phone.owner
 
         all_phones = person.phones.all()
-        self.assertEquals(all_phones.count(), 1)
+        self.assertEqual(all_phones.count(), 1)
 
     def test_delete_cascade(self):
         """Test delete with cascade"""
@@ -48,14 +48,14 @@ class RelatedModelTest(TestCase):
         all_phones = person.phones.all()
         all_with_deleted = person.phones.all(with_deleted=True)
 
-        self.assertEquals(all_phones.count(), 3)
-        self.assertEquals(all_with_deleted.count(), 3)
+        self.assertEqual(all_phones.count(), 3)
+        self.assertEqual(all_with_deleted.count(), 3)
 
         person.delete()
-        self.assertEquals(all_phones.count(), 0)
+        self.assertEqual(all_phones.count(), 0)
 
         # cached queries with with_deleted=True should not exclude deleted ones.
-        self.assertEquals(all_with_deleted.count(), 3)
+        self.assertEqual(all_with_deleted.count(), 3)
 
     def test_delete_cascade_with_many_objects(self):
         """Test delete cascade with many objects"""
@@ -64,20 +64,20 @@ class RelatedModelTest(TestCase):
         baker.make(Address, owner=person, _quantity=5)
 
         phones = person.phones.all()
-        self.assertEquals(phones.count(), 5)
+        self.assertEqual(phones.count(), 5)
 
         person.delete()
         phones = person.phones.all(with_deleted=True)
         phones_without_deleted = phones.all()
 
-        self.assertEquals(phones.count(), 5)
-        self.assertEquals(phones_without_deleted.count(), 0)
+        self.assertEqual(phones.count(), 5)
+        self.assertEqual(phones_without_deleted.count(), 0)
 
         addresses = person.addresses.all(with_deleted=True)
         address_without_deleted = addresses.all()
 
-        self.assertEquals(addresses.count(), 5)
-        self.assertEquals(address_without_deleted.count(), 0)
+        self.assertEqual(addresses.count(), 5)
+        self.assertEqual(address_without_deleted.count(), 0)
 
     def test_delete_cascade_with_objects_not_paranoid(self):
         """
@@ -101,12 +101,12 @@ class RelatedModelTest(TestCase):
         phones = person.phones.all(with_deleted=False)
         addresses = person.phones.all(with_deleted=False)
 
-        self.assertEquals(phones.count(), 0)
-        self.assertEquals(addresses.count(), 0)
+        self.assertEqual(phones.count(), 0)
+        self.assertEqual(addresses.count(), 0)
 
         person.restore()
-        self.assertEquals(phones.all(with_deleted=False).count(), 5)
-        self.assertEquals(addresses.all(with_deleted=False).count(), 5)
+        self.assertEqual(phones.all(with_deleted=False).count(), 5)
+        self.assertEqual(addresses.all(with_deleted=False).count(), 5)
 
     def test_restore_cascade_in_queryset(self):
         """Test restore on cascade in a queryset.restore()"""
@@ -120,28 +120,28 @@ class RelatedModelTest(TestCase):
 
         Person.objects.all(with_deleted=True).restore()
         people = Person.objects.all()
-        self.assertEquals(people.count(), amount)
+        self.assertEqual(people.count(), amount)
 
         for person in people:
             self.assertFalse(person.is_soft_deleted)
-            self.assertEquals(person.phones.all().count(), amount_phones)
+            self.assertEqual(person.phones.all().count(), amount_phones)
 
     def test_related_name_queries_all(self):
         """Test related name query .all()"""
         person = baker.make(Person)
         phone1 = baker.make(Phone, owner=person, _quantity=2)[0]
 
-        self.assertEquals(person.phones.all().count(), 2)
+        self.assertEqual(person.phones.all().count(), 2)
 
         phone1.delete()
-        self.assertEquals(person.phones.all().count(), 1)
-        self.assertEquals(person.phones.all(with_deleted=True).count(), 2)
+        self.assertEqual(person.phones.all().count(), 1)
+        self.assertEqual(person.phones.all(with_deleted=True).count(), 2)
 
         phone1.restore()
         person.delete()
-        self.assertEquals(person.phones.all().count(), 2)
-        self.assertEquals(person.phones.all(with_deleted=True).count(), 2)
-        self.assertEquals(person.phones.all(with_deleted=False).count(), 0)
+        self.assertEqual(person.phones.all().count(), 2)
+        self.assertEqual(person.phones.all(with_deleted=True).count(), 2)
+        self.assertEqual(person.phones.all(with_deleted=False).count(), 0)
 
     def test_related_name_queries_filter(self):
         """Test related name query .filter()"""
@@ -150,9 +150,9 @@ class RelatedModelTest(TestCase):
         phone1 = baker.make(Phone, owner=person, _quantity=2)[0]
 
         phone1.delete()
-        self.assertEquals(person.phones.filter().count(), 1)
-        self.assertEquals(person.phones.filter(with_deleted=True).count(), 2)
-        self.assertEquals(person.phones.filter(with_deleted=False).count(), 1)
+        self.assertEqual(person.phones.filter().count(), 1)
+        self.assertEqual(person.phones.filter(with_deleted=True).count(), 2)
+        self.assertEqual(person.phones.filter(with_deleted=False).count(), 1)
 
     def test_get_on_related(self):
         """Test .get() with related_name query"""
@@ -213,10 +213,10 @@ class RelatedModelTest(TestCase):
                 phone.delete()
 
         deleted = person.phones.deleted_only()
-        self.assertEquals(deleted.count(), 5)
+        self.assertEqual(deleted.count(), 5)
 
         deleted_zero = person.phones.all().deleted_only()
-        self.assertEquals(deleted_zero.count(), 0)
+        self.assertEqual(deleted_zero.count(), 0)
 
     def test_delete_using(self):
         using = 'db2'
@@ -232,8 +232,8 @@ class RelatedModelTest(TestCase):
         self.assertEqual(people.count(), 1)
         self.assertEqual(phones.count(), 1)
 
-        self.assertEquals(phones.all().count(), 0)
-        self.assertEquals(people.all().count(), 0)
+        self.assertEqual(phones.all().count(), 0)
+        self.assertEqual(people.all().count(), 0)
 
-        self.assertEquals(phones.deleted_only().count(), 1)
-        self.assertEquals(people.deleted_only().count(), 1)
+        self.assertEqual(phones.deleted_only().count(), 1)
+        self.assertEqual(people.deleted_only().count(), 1)

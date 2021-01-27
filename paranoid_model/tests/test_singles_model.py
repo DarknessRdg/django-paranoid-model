@@ -8,8 +8,11 @@ import time
 
 
 class SingleModelTest(TestCase):
-    """Test paranoid model behavion on a sigle model"""
-    multi_db = True
+    """Test paranoid model behavion on a single model"""
+    databases = '__all__'
+
+    def tearDown(self):
+        Person.objects.using('db2').all(with_deleted=True).delete(hard_delete=True)
 
     def assertNotRaises(self, function):
         """
@@ -35,7 +38,7 @@ class SingleModelTest(TestCase):
         person = baker.make(Person)
         person.save()
 
-        self.assertEquals(
+        self.assertEqual(
             person.created_at.replace(microsecond=0),
             person.updated_at.replace(microsecond=0)
         )
@@ -45,7 +48,7 @@ class SingleModelTest(TestCase):
         time.sleep(seconds)  # wait seconds before save again so time should be different
         person.save()
 
-        self.assertNotEquals(person.created_at, person.updated_at)
+        self.assertNotEqual(person.created_at, person.updated_at)
 
     def test_soft_delete(self):
         """Test delete of a paranoid model"""
@@ -70,10 +73,10 @@ class SingleModelTest(TestCase):
         baker.make(Person, _quantity=10)
 
         Person.objects.all().delete()
-        self.assertEquals(Person.objects.all().count(), 0)
+        self.assertEqual(Person.objects.all().count(), 0)
 
         Person.objects.all(with_deleted=True).restore()
-        self.assertEquals(Person.objects.all().count(), 10)
+        self.assertEqual(Person.objects.all().count(), 10)
 
     def test_soft_delete_in_a_queryset(self):
         """Test soft delete all instances in a querryset"""
@@ -136,7 +139,7 @@ class SingleModelTest(TestCase):
         baker.make(Person, _quantity=10, _fill_optional=['deleted_at'])
 
         filter_without_param = Person.objects.filter(Q(name='foo'))
-        self.assertEquals(filter_without_param.count(), 1)
+        self.assertEqual(filter_without_param.count(), 1)
         self.assertTrue(
             filter(lambda instance: instance.is_soft_deleted, filter_without_param)
         )
@@ -187,7 +190,7 @@ class SingleModelTest(TestCase):
         name = person.name
 
         query = Person.objects.filter()
-        self.assertEquals(query.count(), 1)
+        self.assertEqual(query.count(), 1)
 
         self.assertNotRaises(query.get)
 
@@ -235,13 +238,13 @@ class SingleModelTest(TestCase):
         baker.make(Person, _quantity=10, _fill_optional=['deleted_at'])
 
         deleted = Person.objects.deleted_only()
-        self.assertEquals(deleted.count(), 10)
+        self.assertEqual(deleted.count(), 10)
 
         deleted = Person.objects.all(with_deleted=True).deleted_only()
-        self.assertEquals(deleted.count(), 10)
+        self.assertEqual(deleted.count(), 10)
 
         deleted_zero = Person.objects.all().deleted_only()
-        self.assertEquals(deleted_zero.count(), 0)
+        self.assertEqual(deleted_zero.count(), 0)
 
     def test_delete_using(self):
         using = 'db2'
