@@ -26,14 +26,14 @@ class ParanoidQuerySet(models.query.QuerySet):
             paranoid_model.SoftDeleted: object has been soft deleted
             model.MultipleObjectsReturned: if filtered more than 1 instance
         """
-        objeto = super(ParanoidQuerySet, self).get(*args, **kwargs)
+        obj = super(ParanoidQuerySet, self).get(*args, **kwargs)
 
-        if objeto.is_soft_deleted:
-            raise SoftDeleted(
+        if obj.is_soft_deleted:
+            raise obj.SoftDeleted(
                 "Object %s has been soft deleted. Try use get_deleted() or get_or_restore()." %
                 self.model._meta.object_name)
 
-        return objeto
+        return obj
 
     def get_deleted(self, *arg, **kwargs):
         """

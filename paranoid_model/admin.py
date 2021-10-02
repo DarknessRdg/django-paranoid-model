@@ -1,7 +1,6 @@
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 from django.http import HttpResponseRedirect
-from paranoid_model.exceptions import SoftDeleted
 from django.core.exceptions import ValidationError
 from django.contrib import messages
 from django.contrib.admin.actions import delete_selected
@@ -92,7 +91,7 @@ class ParanoidAdmin(admin.ModelAdmin):
         if request.POST:
             try:
                 obj = self.model.objects.get(pk=object_id)
-            except SoftDeleted:
+            except obj.SoftDeleted:
                 obj = self.model.objects.get_deleted(pk=object_id)
 
             hard_delete = 'hard_delete' in request.GET.keys()
@@ -141,7 +140,7 @@ class ParanoidAdmin(admin.ModelAdmin):
         try:
             object_id = field.to_python(object_id)
             return queryset.get(**{field.name: object_id})
+        except model.SoftDeleted:
+            return queryset.get_deleted(**{field.name: object_id})
         except (model.DoesNotExist, ValidationError, ValueError):
             return None
-        except SoftDeleted:
-            return queryset.get_deleted(**{field.name: object_id})
