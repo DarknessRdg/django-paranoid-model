@@ -9,5 +9,9 @@ install:
 # command to run tests
 script:
   - pytest --cov=paranoid_model --cov-report xml:coverage.xml
+
+# send converage report co codacy
+before_install:
+  - chmod +x ./ci/send_coverage_report.sh
 after_success:
   - ./ci/send_coverage_report.sh
