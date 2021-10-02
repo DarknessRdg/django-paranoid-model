@@ -10,4 +10,4 @@ install:
 script:
   - pytest --cov=paranoid_model --cov-report xml:coverage.xml
 after_success:
-  - bash <(curl --insecure -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
+  - ./ci/send_coverage_report.sh
