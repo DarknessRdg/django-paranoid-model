@@ -8,5 +8,6 @@ install:
   - pip install -e .[test]
 # command to run tests
 script:
-  - pytest --cov=paranoid_model --cov-report xml:cobertura.xml
-  -bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r cobertura.xml
+  - pytest --cov=paranoid_model --cov-report xml:coverage.xml
+after_success:
+  - bash <(curl --insecure -Ls https://coverage.codacy.com/get.sh) report -r coverage.xml
