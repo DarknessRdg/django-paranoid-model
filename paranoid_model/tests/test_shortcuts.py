@@ -2,7 +2,7 @@ from django.http import Http404
 from django.test import TestCase
 from model_bakery import baker
 
-from paranoid_model.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404
 from paranoid_model.tests import models
 
 
