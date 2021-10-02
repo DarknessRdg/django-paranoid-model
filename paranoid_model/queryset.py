@@ -4,7 +4,7 @@ File with QuerySet used on Paranoid Model
 
 
 from django.db import models
-from paranoid_model.exceptions import SoftDeleted, IsNotSoftDeleted
+from paranoid_model.exceptions import IsNotSoftDeleted
 import paranoid_model.models
 
 
